@@ -250,7 +250,7 @@ AudioTrack PlaylistComponent::URLToAudioTrack(URL audioURL){
     }
     
     
-    std::string trackURL = audioURL.getFileName().toStdString();
+    std::string trackURL = audioURL.toString(false).toStdString();
     
     
     
