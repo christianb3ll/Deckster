@@ -25,6 +25,9 @@ PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI
         // should it check for valid file here?
         trackList.push_back(track);
     }
+    
+    // Initialize the filtered tracklist to be the full tracklist
+    filteredTracks = trackList;
                                         
     tableComponent.getHeader().addColumn("Track title", 1, 200);
     tableComponent.getHeader().addColumn("Runtime", 2, 100);
@@ -93,7 +96,7 @@ void PlaylistComponent::resized()
 }
 
 int PlaylistComponent::getNumRows(){
-    int playlistRows = static_cast<int>(trackList.size());
+    int playlistRows = static_cast<int>(filteredTracks.size());
     return playlistRows;
 }
 
@@ -108,20 +111,16 @@ void PlaylistComponent::paintRowBackground(Graphics & g, int rowNumber, int widt
 void PlaylistComponent::paintCell(Graphics & g,  int rowNumber, int columnId, int width, int height, bool rowIsSelected){
     // Track title column
     if(columnId == 1){
-        g.drawText(trackList[rowNumber].getTrackTitle(), 2, 0, width - 2, height, Justification::centredLeft, true);
+        g.drawText(filteredTracks[rowNumber].getTrackTitle(), 2, 0, width - 2, height, Justification::centredLeft, true);
     }
     // Track duration column
     if(columnId == 2){
-        g.drawText(trackList[rowNumber].getTrackLength(), 2, 0, width - 2, height, Justification::centredLeft, true);
+        g.drawText(filteredTracks[rowNumber].getTrackLength(), 2, 0, width - 2, height, Justification::centredLeft, true);
     }
     // Track filepath column
     if(columnId == 3){
-        g.drawText(trackList[rowNumber].getTrackFilepath(), 2, 0, width - 2, height, Justification::centredLeft, true);
+        g.drawText(filteredTracks[rowNumber].getTrackFilepath(), 2, 0, width - 2, height, Justification::centredLeft, true);
     }
-}
-
-void PlaylistComponent::mouseDoubleClick(const MouseEvent & event){
-    std::cout << event.eventComponent << std::endl;
 }
 
 //Component*  PlaylistComponent::refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component *existingComponentToUpdate){
@@ -217,6 +216,17 @@ void PlaylistComponent::textEditorTextChanged(TextEditor &searchBar){
     
     
     std::cout << "Searching: " << searchBar.getText() << std::endl;
+    
+    filteredTracks.clear();
+    
+    for(AudioTrack track : trackList){
+        if(String(track.getTrackTitle()).contains(searchBar.getText())){
+            std::cout << track.getTrackTitle() << std::endl;
+            filteredTracks.push_back(track);
+        }
+    }
+    tableComponent.repaint();
+    tableComponent.updateContent();
 }
 
 

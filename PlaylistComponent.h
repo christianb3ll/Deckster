@@ -53,8 +53,6 @@ public:
 //    Component*  refreshComponentForCell (int rowNumber, int columnId, bool isRowSelected, Component *existingComponentToUpdate) override;
     
     void buttonClicked(Button* button) override;
-
-    void mouseDoubleClick(const MouseEvent & event) override;
     
     void addToPlaylist(AudioTrack track);
     
@@ -72,7 +70,7 @@ private:
     std::string playlistFilepath = "playlist.csv";
     
     std::vector<AudioTrack> trackList;
-    std::vector<int> filteredTracks;
+    std::vector<AudioTrack> filteredTracks;
     
     TextButton importButton{"Import a Track"};
 //    TextButton openDeck1{"Send to Deck 1"};
