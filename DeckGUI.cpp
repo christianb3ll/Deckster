@@ -89,8 +89,9 @@ void DeckGUI::buttonClicked(Button * button){
         std::cout << "Load Button clicked" << std::endl;
         FileChooser chooser{"Select a file"};
         if(chooser.browseForFileToOpen()){
-            player->loadURL(URL{chooser.getResult()});
-            waveformDisplay.loadURL(URL{chooser.getResult()});
+//            player->loadURL(URL{chooser.getResult()});
+//            waveformDisplay.loadURL(URL{chooser.getResult()});
+            loadTrack(URL{chooser.getResult()});
         }
 
     }
@@ -119,11 +120,17 @@ void DeckGUI::filesDropped (const StringArray &files, int x, int y){
     
     std::cout << "file dropped" << std::endl;
     if(files.size() == 1){
-        player->loadURL(URL{File{files[0]}});
-        waveformDisplay.loadURL(URL{File{files[0]}});
+//        player->loadURL(URL{File{files[0]}});
+//        waveformDisplay.loadURL(URL{File{files[0]}});
+        loadTrack(URL{File{files[0]}});
     }
 }
 
 void DeckGUI::timerCallback(){
     waveformDisplay.setPositionRelative(player->getPositionRelative());
+}
+
+void DeckGUI::loadTrack(URL track){
+    player->loadURL(URL{track});
+    waveformDisplay.loadURL(URL{track});
 }

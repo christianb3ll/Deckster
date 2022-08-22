@@ -15,10 +15,10 @@
 
 
 //==============================================================================
-PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DJAudioPlayer* _player1, DJAudioPlayer* _player2)
+PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI* _deck1, DeckGUI* _deck2)
                                     : formatManager(_formatManager),
-                                    player1(_player1),
-                                    player2(_player2){
+                                    deck1(_deck1),
+                                    deck2(_deck2){
                                         
     for(AudioTrack track : CSVProcessor::readCSVFile(playlistFilepath)){
 
@@ -177,7 +177,9 @@ void PlaylistComponent::buttonClicked(Button* button){
         int trackId = tableComponent.getSelectedRow();
         
         std::cout << "Track:" << trackId << " selected" << std::endl;
-        player1->loadURL(URL{trackList[trackId].getTrackFilepath()});
+//        player1->loadURL(URL{trackList[trackId].getTrackFilepath()});
+//        deck1->player->loadURL(URL{trackList[trackId].getTrackFilepath()});
+        deck1->loadTrack(URL{trackList[trackId].getTrackFilepath()});
         
     }
     
@@ -186,7 +188,8 @@ void PlaylistComponent::buttonClicked(Button* button){
         int trackId = tableComponent.getSelectedRow();
         
         std::cout << "Track:" << trackId << " selected" << std::endl;
-        player2->loadURL(URL{trackList[trackId].getTrackFilepath()});
+//        player2->loadURL(URL{trackList[trackId].getTrackFilepath()});
+        deck2->loadTrack(URL{trackList[trackId].getTrackFilepath()});
     }
         
 //    } else {

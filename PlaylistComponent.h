@@ -15,7 +15,7 @@
 #include <string>
 #include "AudioTrack.h"
 #include "DJAudioPlayer.h"
-
+#include "DeckGUI.h"
 
 //==============================================================================
 /*
@@ -27,7 +27,7 @@ class PlaylistComponent  : public juce::Component,
                            public AudioTransportSource
 {
 public:
-    PlaylistComponent(AudioFormatManager& _formatManager, DJAudioPlayer* player1, DJAudioPlayer* player2);
+    PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI* deck1, DeckGUI* deck2);
     ~PlaylistComponent() override;
     
     void releaseResources() override;
@@ -83,8 +83,8 @@ private:
     
     TextEditor searchBar{"Search..."};
     
-    DJAudioPlayer* player1;
-    DJAudioPlayer* player2;
+    DeckGUI* deck1;
+    DeckGUI* deck2;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistComponent)
 };

@@ -52,6 +52,8 @@ public:
 
     void timerCallback() override;
     
+    void loadTrack(URL track);
+    
 private:
     TextButton playButton{"PLAY"};
     TextButton stopButton{"STOP"};
