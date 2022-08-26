@@ -1,5 +1,6 @@
 #include <JuceHeader.h>
 #include "DeckGUI.h"
+#include "Equalizer.h"
 
 //==============================================================================
 DeckGUI::DeckGUI(DJAudioPlayer* _player,
@@ -18,6 +19,8 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     addAndMakeVisible(posSlider);
     
     addAndMakeVisible(waveformDisplay);
+    
+    addAndMakeVisible(equalizer);
     
     playButton.addListener(this);
     stopButton.addListener(this);
@@ -68,7 +71,8 @@ void DeckGUI::resized()
     speedSlider.setBounds(0, rowH*3, getWidth(), rowH);
     posSlider.setBounds(0, rowH*4, getWidth(), rowH);
     waveformDisplay.setBounds(0, rowH*5, getWidth(), rowH*2);
-    loadButton.setBounds(0, getHeight()-rowH, getWidth(), rowH);
+    loadButton.setBounds(0, rowH*6, getWidth(), rowH);
+    equalizer.setBounds(0, getHeight()-rowH, getWidth(), rowH);
 
 }
 

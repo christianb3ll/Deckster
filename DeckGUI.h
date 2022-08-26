@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "DJAudioPlayer.h"
 #include "WaveformDisplay.h"
+#include "Equalizer.h"
 
 class DeckGUI  : public juce::Component,
                  public Button::Listener,
@@ -62,6 +63,8 @@ private:
     Slider volSlider;
     Slider speedSlider;
     Slider posSlider;
+    
+    Equalizer equalizer;
     
     DJAudioPlayer* player;
     

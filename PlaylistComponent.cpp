@@ -62,7 +62,7 @@ PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI
 
 PlaylistComponent::~PlaylistComponent()
 {
-    
+    tableComponent.setModel(nullptr);
 }
 
 void PlaylistComponent::releaseResources() {
