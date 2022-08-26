@@ -34,6 +34,8 @@ class DJAudioPlayer : public AudioSource {
         
         void test();
     
+        void toggleLoop();
+    
     private:
         AudioFormatManager&  formatManager;
         std::unique_ptr<AudioFormatReaderSource> readerSource;

@@ -32,8 +32,6 @@ PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI
     tableComponent.getHeader().addColumn("Track title", 1, 200);
     tableComponent.getHeader().addColumn("Runtime", 2, 100);
     tableComponent.getHeader().addColumn("Filepath", 3, 100);
-    tableComponent.getHeader().addColumn("Deck 1", 4, 100);
-    tableComponent.getHeader().addColumn("Deck 2", 5, 100);
                                         
     tableComponent.setModel(this);
     

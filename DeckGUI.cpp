@@ -13,6 +13,10 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     addAndMakeVisible(playButton);
     addAndMakeVisible(stopButton);
     addAndMakeVisible(loadButton);
+    addAndMakeVisible(rewindButton);
+    addAndMakeVisible(fastforwardButton);
+    
+    addAndMakeVisible(testButton);
     
     addAndMakeVisible(volSlider);
     addAndMakeVisible(speedSlider);
@@ -25,6 +29,11 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     playButton.addListener(this);
     stopButton.addListener(this);
     loadButton.addListener(this);
+    rewindButton.addListener(this);
+    fastforwardButton.addListener(this);
+    
+    testButton.addListener(this);
+    
     volSlider.addListener(this);
     speedSlider.addListener(this);
 //    posSlider.addListener(this);
@@ -37,7 +46,6 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 //    posSlider.setRange(0.0, 1.0);
     
     startTimer(500);
-
 }
 
 DeckGUI::~DeckGUI()
@@ -59,10 +67,10 @@ void DeckGUI::paint (juce::Graphics& g)
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
 
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("DeckGUI", getLocalBounds(),
-                juce::Justification::centred, true);
+//    g.setColour (juce::Colours::white);
+//    g.setFont (14.0f);
+//    g.drawText ("DeckGUI", getLocalBounds(),
+//                juce::Justification::centred, true);
 }
 
 void DeckGUI::resized()
@@ -71,14 +79,18 @@ void DeckGUI::resized()
     
     waveformDisplay.setBounds(0, 0, getWidth(), rowH*2);
     
-    playButton.setBounds(0, rowH*2, getWidth()/3, rowH);
-    stopButton.setBounds(getWidth()/3, rowH*2, getWidth()/3, rowH);
-    loadButton.setBounds((getWidth()/3)*2, rowH*2, getWidth()/3, rowH);
+    rewindButton.setBounds(0, rowH*2, getWidth()/5, rowH);
+    stopButton.setBounds(getWidth()/5, rowH*2, getWidth()/5, rowH);
+    playButton.setBounds((getWidth()/5)*2, rowH*2, getWidth()/5, rowH);
+    fastforwardButton.setBounds((getWidth()/5)*3, rowH*2, getWidth()/5, rowH);
+    loadButton.setBounds((getWidth()/5)*4, rowH*2, getWidth()/5, rowH);
+    
     
     volSlider.setBounds(0, rowH*3, getWidth(), rowH);
     speedSlider.setBounds(0, rowH*4, getWidth(), rowH);
 //    posSlider.setBounds(0, rowH*5, getWidth(), rowH);
    
+    testButton.setBounds(0, rowH*5, getWidth(), rowH);
     
     equalizer.setBounds(0, rowH*6, getWidth(), rowH*2);
 
@@ -106,6 +118,21 @@ void DeckGUI::buttonClicked(Button * button){
             loadTrack(URL{chooser.getResult()});
         }
 
+    }
+    
+    if(button == &rewindButton){
+        std::cout << "Rewind Button clicked" << std::endl;
+        
+    }
+    
+    if(button == &fastforwardButton){
+        std::cout << "Fast Forward Button clicked" << std::endl;
+        player->setSpeed(5.0);
+    }
+    
+    if(button == &testButton){
+        std::cout << "test Button clicked" << std::endl;
+        player->toggleLoop();
     }
     
 }

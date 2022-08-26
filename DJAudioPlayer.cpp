@@ -21,6 +21,7 @@ void DJAudioPlayer::prepareToPlay (int samplesPerBlockExpected, double sampleRat
   
     transportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
     resampleSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    
 }
 
 void DJAudioPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) {
@@ -130,4 +131,9 @@ double DJAudioPlayer::getPositionRelative(){
 
 void DJAudioPlayer::test(){
     std::cout << "I'm here" << std::endl;
+}
+
+//readerSource->setLooping(true);
+void DJAudioPlayer::toggleLoop(){
+    readerSource->setLooping(true);
 }

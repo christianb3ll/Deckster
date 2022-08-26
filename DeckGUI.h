@@ -62,6 +62,10 @@ private:
     TextButton playButton{"PLAY"};
     TextButton stopButton{"STOP"};
     TextButton loadButton{"LOAD"};
+    TextButton rewindButton{"REWIND"};
+    TextButton fastforwardButton{"FAST FORWARD"};
+    
+    TextButton testButton{"Test"};
     
     Slider volSlider;
     Slider speedSlider;
