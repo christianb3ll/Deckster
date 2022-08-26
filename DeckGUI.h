@@ -55,6 +55,9 @@ public:
     
     void loadTrack(URL track);
     
+    
+    void mouseDown(const MouseEvent &event) override;
+    
 private:
     TextButton playButton{"PLAY"};
     TextButton stopButton{"STOP"};
@@ -62,7 +65,7 @@ private:
     
     Slider volSlider;
     Slider speedSlider;
-    Slider posSlider;
+//    Slider posSlider;
     
     Equalizer equalizer;
     

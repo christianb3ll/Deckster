@@ -86,7 +86,8 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions
     
-    deckGUI1.setBounds(0, 0, getWidth()/2, getHeight()/2);
-    deckGUI2.setBounds(getWidth()/2, 0, getWidth()/2, getHeight()/2);
-    playlistComponent.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+    double deckHeight = getHeight() - getHeight()/3;
+    deckGUI1.setBounds(0, 0, getWidth()/2, deckHeight);
+    deckGUI2.setBounds(getWidth()/2, 0, getWidth()/2, deckHeight);
+    playlistComponent.setBounds(0, deckHeight, getWidth(), getHeight()/3);
 }

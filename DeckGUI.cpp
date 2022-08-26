@@ -16,7 +16,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     
     addAndMakeVisible(volSlider);
     addAndMakeVisible(speedSlider);
-    addAndMakeVisible(posSlider);
+//    addAndMakeVisible(posSlider);
     
     addAndMakeVisible(waveformDisplay);
     
@@ -27,11 +27,14 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     loadButton.addListener(this);
     volSlider.addListener(this);
     speedSlider.addListener(this);
-    posSlider.addListener(this);
+//    posSlider.addListener(this);
+    
+    // maybe delete
+    waveformDisplay.addMouseListener(this, false);
 
     volSlider.setRange(0.0, 1.0);
     speedSlider.setRange(1,100.0);
-    posSlider.setRange(0.0, 1.0);
+//    posSlider.setRange(0.0, 1.0);
     
     startTimer(500);
 
@@ -59,20 +62,25 @@ void DeckGUI::paint (juce::Graphics& g)
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
     g.drawText ("DeckGUI", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
+                juce::Justification::centred, true);
 }
 
 void DeckGUI::resized()
 {
     double rowH = getHeight()/8;
-    playButton.setBounds(0, 0, getWidth(), rowH);
-    stopButton.setBounds(0, rowH, getWidth(), rowH);
-    volSlider.setBounds(0, rowH*2, getWidth(), rowH);
-    speedSlider.setBounds(0, rowH*3, getWidth(), rowH);
-    posSlider.setBounds(0, rowH*4, getWidth(), rowH);
-    waveformDisplay.setBounds(0, rowH*5, getWidth(), rowH*2);
-    loadButton.setBounds(0, rowH*6, getWidth(), rowH);
-    equalizer.setBounds(0, getHeight()-rowH, getWidth(), rowH);
+    
+    waveformDisplay.setBounds(0, 0, getWidth(), rowH*2);
+    
+    playButton.setBounds(0, rowH*2, getWidth()/3, rowH);
+    stopButton.setBounds(getWidth()/3, rowH*2, getWidth()/3, rowH);
+    loadButton.setBounds((getWidth()/3)*2, rowH*2, getWidth()/3, rowH);
+    
+    volSlider.setBounds(0, rowH*3, getWidth(), rowH);
+    speedSlider.setBounds(0, rowH*4, getWidth(), rowH);
+//    posSlider.setBounds(0, rowH*5, getWidth(), rowH);
+   
+    
+    equalizer.setBounds(0, rowH*6, getWidth(), rowH*2);
 
 }
 
@@ -111,9 +119,10 @@ void DeckGUI::sliderValueChanged(Slider *slider){
         player->setSpeed(slider->getValue());
     }
 
-    if(slider == &posSlider){
-        player->setPositionRelative(slider->getValue());
-    }
+    // Removed. Position can now be set on waveform directly
+//    if(slider == &posSlider){
+//        player->setPositionRelative(slider->getValue());
+//    }
 }
 
 bool DeckGUI::isInterestedInFileDrag (const StringArray &files){
@@ -137,4 +146,13 @@ void DeckGUI::timerCallback(){
 void DeckGUI::loadTrack(URL track){
     player->loadURL(URL{track});
     waveformDisplay.loadURL(URL{track});
+}
+
+
+void DeckGUI::mouseDown(const MouseEvent &event){
+    double mousePos = event.getMouseDownX();
+    double relPos = mousePos / getWidth();
+    std::cout << relPos << std::endl;
+    
+    player->setPositionRelative(relPos);
 }
