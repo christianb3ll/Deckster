@@ -36,9 +36,12 @@ class DJAudioPlayer : public AudioSource {
     
         void toggleLoop();
     
+        void setFilterCoefficients(IIRCoefficients coefficients);
+    
     private:
         AudioFormatManager&  formatManager;
         std::unique_ptr<AudioFormatReaderSource> readerSource;
         AudioTransportSource transportSource;
         ResamplingAudioSource resampleSource{&transportSource, false, 2};
+        IIRFilterAudioSource filterSource{&resampleSource, false};
 };

@@ -12,11 +12,16 @@
 #include "Equalizer.h"
 
 //==============================================================================
-Equalizer::Equalizer()
+Equalizer::Equalizer(DJAudioPlayer* _player)
+                    : player(_player)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
+    addAndMakeVisible(highPassSlider);
 
+    highPassSlider.addListener(this);
+
+    highPassSlider.setRange(100.0, 10000.0);
 }
 
 Equalizer::~Equalizer()
@@ -47,5 +52,19 @@ void Equalizer::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
+    highPassSlider.setBounds(0, 0, getWidth(), getHeight()/2);
 
+}
+
+void Equalizer::sliderValueChanged(Slider *slider){
+    if(slider == &highPassSlider){
+        this->highPassFreq = slider->getValue();
+        
+        player->setFilterCoefficients(IIRCoefficients::makeHighPass(44000, this->highPassFreq));
+    }
+    
+}
+
+double Equalizer::getHighPassFrequency(){
+    return this->highPassFreq;
 }

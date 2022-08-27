@@ -11,19 +11,28 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "DJAudioPlayer.h"
 
 //==============================================================================
 /*
 */
-class Equalizer  : public juce::Component
+class Equalizer  : public juce::Component,
+                   public Slider::Listener
 {
 public:
-    Equalizer();
+    Equalizer(DJAudioPlayer* player);
     ~Equalizer() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
+    
+    void sliderValueChanged(Slider *slider) override;
+    
+    double getHighPassFrequency();
 
 private:
+    DJAudioPlayer* player;
+    Slider highPassSlider;
+    double highPassFreq;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Equalizer)
 };

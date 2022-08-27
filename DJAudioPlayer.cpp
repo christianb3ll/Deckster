@@ -21,16 +21,18 @@ void DJAudioPlayer::prepareToPlay (int samplesPerBlockExpected, double sampleRat
   
     transportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
     resampleSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
-    
+    filterSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 
 void DJAudioPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) {
     resampleSource.getNextAudioBlock(bufferToFill);
+    filterSource.getNextAudioBlock(bufferToFill);
 }
 
 void DJAudioPlayer::releaseResources() {
     transportSource.releaseResources();
     resampleSource.releaseResources();
+    filterSource.releaseResources();
 }
 
 void DJAudioPlayer::loadURL(URL audioURL){
@@ -136,4 +138,8 @@ void DJAudioPlayer::test(){
 //readerSource->setLooping(true);
 void DJAudioPlayer::toggleLoop(){
     readerSource->setLooping(true);
+}
+
+void DJAudioPlayer::setFilterCoefficients(IIRCoefficients coefficients){
+    filterSource.setCoefficients(coefficients);
 }

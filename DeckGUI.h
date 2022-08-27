@@ -71,9 +71,11 @@ private:
     Slider speedSlider;
 //    Slider posSlider;
     
-    Equalizer equalizer;
+    
     
     DJAudioPlayer* player;
+    
+    Equalizer equalizer{player};
     
     WaveformDisplay waveformDisplay;
     
