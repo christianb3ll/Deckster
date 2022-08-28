@@ -25,7 +25,7 @@ void DJAudioPlayer::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 }
 
 void DJAudioPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) {
-    resampleSource.getNextAudioBlock(bufferToFill);
+//    resampleSource.getNextAudioBlock(bufferToFill);
     filterSource.getNextAudioBlock(bufferToFill);
 }
 

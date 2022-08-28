@@ -20,16 +20,20 @@ WaveformDisplay::~WaveformDisplay()
 /** gets called when a region of a component needs redrawing */
 void WaveformDisplay::paint (juce::Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
+    g.fillAll (Colour(217,217,217));   // clear the background
 
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
 
-    g.setColour (juce::Colours::orange);
+    // Draw waveform window
+    g.setColour (Colour(57,57,57));
+    g.fillRoundedRectangle(10,10,getWidth()-20,getHeight()-20, 8);
     
+    // Draw the waveform and playhead
+    g.setColour (juce::Colours::limegreen);
     if(fileLoaded){
         audioThumb.drawChannel(g, getLocalBounds(), 0, audioThumb.getTotalLength(), 0, 1.0f);
-        g.setColour(Colours::lightgreen);
+        g.setColour(Colour(255,122,0));
         g.drawRect(position * getWidth(), 0, getWidth()/20, getHeight());
     } else {
         g.setFont (20.0f);

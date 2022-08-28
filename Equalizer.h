@@ -34,5 +34,8 @@ private:
     DJAudioPlayer* player;
     Slider highPassSlider;
     double highPassFreq;
+    
+    Slider lowPassSlider;
+    double lowPassFreq;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Equalizer)
 };
