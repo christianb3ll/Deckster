@@ -46,6 +46,9 @@ public:
      * @param slider pointer to a slider */
     void sliderValueChanged(Slider *slider) override;
     
+    void sliderDragEnded(Slider *slider) override;
+
+    
     
     bool isInterestedInFileDrag (const StringArray &files) override;
     

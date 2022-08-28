@@ -42,7 +42,9 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     waveformDisplay.addMouseListener(this, false);
 
     volSlider.setRange(0.0, 1.0);
-    speedSlider.setRange(1,100.0);
+    speedSlider.setRange(1,20.0);
+    speedSlider.setSliderStyle(Slider::Rotary);
+    speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
 //    posSlider.setRange(0.0, 1.0);
     
     startTimer(500);
@@ -62,15 +64,28 @@ void DeckGUI::paint (juce::Graphics& g)
        drawing code..
     */
 
-    g.fillAll (Colour(169,169,169));   // clear the background
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));    // clear the background
 
-    g.setColour (juce::Colours::grey);
+    g.setColour (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
 
     // Draw the speaker
+    g.setColour(Colour(217, 217, 217));
+    g.drawRect(0, 0, getWidth(), getHeight()/6);
+    //draw the speaker holes
+    g.setColour (juce::Colours::black);
+    for (auto i = 0; i < 4; ++i){
+        for (auto j = 0; j < 10; ++j){
+            g.fillEllipse(getWidth()/3 + (22*j), (getHeight()/6)/3 + (14*i), 10, 10);
+        }
+    }
+//    g.fillEllipse(getWidth()/3, (getHeight()/6)/3, 8, 8);
+    
     
     
     // Draw the tapedeck
+    g.setColour(Colour(107, 107, 107));
+    g.drawRect(0, getHeight()/6, getWidth(), (getHeight()/6)*2);
     
 //    g.setColour (juce::Colours::white);
 //    g.setFont (14.0f);
@@ -81,23 +96,28 @@ void DeckGUI::paint (juce::Graphics& g)
 void DeckGUI::resized()
 {
     double rowH = getHeight()/8;
+    double waveformDisplaylArea = getHeight()/2;
+    double playbackControlArea = waveformDisplaylArea + (rowH*2);
+    double equalizerArea = playbackControlArea + rowH;
     
-    waveformDisplay.setBounds(0, 0, getWidth(), rowH*2);
+    waveformDisplay.setBounds(0, waveformDisplaylArea, getWidth(), rowH*2);
     
-    rewindButton.setBounds(0, rowH*2, getWidth()/5, rowH);
-    stopButton.setBounds(getWidth()/5, rowH*2, getWidth()/5, rowH);
-    playButton.setBounds((getWidth()/5)*2, rowH*2, getWidth()/5, rowH);
-    fastforwardButton.setBounds((getWidth()/5)*3, rowH*2, getWidth()/5, rowH);
-    loadButton.setBounds((getWidth()/5)*4, rowH*2, getWidth()/5, rowH);
+    double buttonWidth = getWidth()/6;
+    rewindButton.setBounds(0, playbackControlArea,  buttonWidth, rowH);
+    speedSlider.setBounds(buttonWidth, playbackControlArea, buttonWidth, rowH);
+    stopButton.setBounds(buttonWidth*2, playbackControlArea, buttonWidth, rowH);
+    playButton.setBounds(buttonWidth*3, playbackControlArea, buttonWidth, rowH);
+    fastforwardButton.setBounds(buttonWidth*4, playbackControlArea, buttonWidth, rowH);
+    loadButton.setBounds(buttonWidth*5, playbackControlArea, buttonWidth, rowH);
     
     
-    volSlider.setBounds(0, rowH*3, getWidth(), rowH);
-    speedSlider.setBounds(0, rowH*4, getWidth(), rowH);
+//    volSlider.setBounds(0, rowH*3, getWidth(), rowH);
+
 //    posSlider.setBounds(0, rowH*5, getWidth(), rowH);
    
-    testButton.setBounds(0, rowH*5, getWidth(), rowH);
+//    testButton.setBounds(0, rowH*5, getWidth(), rowH);
     
-    equalizer.setBounds(0, rowH*6, getWidth(), rowH*2);
+    equalizer.setBounds(0, equalizerArea, getWidth(), rowH);
 
 }
 
@@ -155,6 +175,12 @@ void DeckGUI::sliderValueChanged(Slider *slider){
 //    if(slider == &posSlider){
 //        player->setPositionRelative(slider->getValue());
 //    }
+}
+
+void DeckGUI::sliderDragEnded(Slider *slider){
+    if(slider == &speedSlider){
+        speedSlider.setValue(1.0, sendNotification);
+    }
 }
 
 bool DeckGUI::isInterestedInFileDrag (const StringArray &files){

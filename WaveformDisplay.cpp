@@ -27,7 +27,8 @@ void WaveformDisplay::paint (juce::Graphics& g)
 
     // Draw waveform window
     g.setColour (Colour(57,57,57));
-    g.fillRoundedRectangle(10,10,getWidth()-20,getHeight()-20, 8);
+    auto waveformWindow = getLocalBounds().toFloat().reduced (10.0);
+    g.fillRoundedRectangle (waveformWindow, 8.0);
     
     // Draw the waveform and playhead
     g.setColour (juce::Colours::limegreen);
