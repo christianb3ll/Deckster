@@ -19,14 +19,34 @@ Equalizer::Equalizer(DJAudioPlayer* _player)
     // initialise any special settings that your component needs.
     addAndMakeVisible(highPassSlider);
     addAndMakeVisible(lowPassSlider);
-
+    
+    
+    // HighPass Slider
     highPassSlider.addListener(this);
-    lowPassSlider.addListener(this);
-
     highPassSlider.setRange(100.0, 10000.0);
-    lowPassSlider.setRange(100.0, 10000.0);
     highPassSlider.setSliderStyle(Slider::LinearVertical);
+    highPassSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, highPassSlider.getTextBoxWidth(), highPassSlider.getTextBoxHeight());
+    highPassSlider.setNumDecimalPlacesToDisplay(0);
+    
+    // LowPass Slider
+    lowPassSlider.addListener(this);
+    lowPassSlider.setRange(100.0, 10000.0);
     lowPassSlider.setSliderStyle(Slider::LinearVertical);
+    lowPassSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, lowPassSlider.getTextBoxWidth(), lowPassSlider.getTextBoxHeight());
+    lowPassSlider.setNumDecimalPlacesToDisplay(0);
+    
+//    highPassLabel.setFont(18.0);
+//    highPassLabel.setText("High Pass", NotificationType::dontSendNotification);
+//    highPassLabel.setColour(Label::ColourIds::textColourId, juce::Colours::black);
+//    highPassLabel.setJustificationType(Justification::centredBottom);
+//    highPassLabel.attachToComponent(&highPassSlider, false);
+//    
+//    
+//    lowPassLabel.setFont(18.0);
+//    lowPassLabel.setText("Low Pass", NotificationType::dontSendNotification);
+//    lowPassLabel.setColour(Label::ColourIds::textColourId, juce::Colours::black);
+//    lowPassLabel.setJustificationType(Justification::centredBottom);
+//    lowPassLabel.attachToComponent(&lowPassSlider, false);
     
 }
 
@@ -43,7 +63,7 @@ void Equalizer::paint (juce::Graphics& g)
        drawing code..
     */
 
-    g.fillAll (Colour(219,219,219));   // clear the background
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
@@ -57,6 +77,8 @@ void Equalizer::paint (juce::Graphics& g)
     g.setColour (Colour(184,184,184));
     g.drawRect (getWidth()/3, 10, 1, getHeight()-20);
     g.drawRect ((getWidth()/3)*2, 10, 1, getHeight()-20);
+    
+    // Draw the labels
     
     
 }

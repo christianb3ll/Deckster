@@ -20,7 +20,7 @@ WaveformDisplay::~WaveformDisplay()
 /** gets called when a region of a component needs redrawing */
 void WaveformDisplay::paint (juce::Graphics& g)
 {
-    g.fillAll (Colour(217,217,217));   // clear the background
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId)); 
 
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component

@@ -91,5 +91,5 @@ void MainComponent::resized()
     double deckHeight = getHeight() - getHeight()/3;
     deckGUI1.setBounds(5, 5, (getWidth()/2)-10, deckHeight-10);
     deckGUI2.setBounds(getWidth()/2 +5, 5, (getWidth()/2)-10, deckHeight-10);
-    playlistComponent.setBounds(0, deckHeight, getWidth(), getHeight()/3);
+    playlistComponent.setBounds(5, deckHeight+5, getWidth()-10, (getHeight()/3)-10);
 }
