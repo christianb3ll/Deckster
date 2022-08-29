@@ -32,6 +32,8 @@ public:
     void buttonClicked(Button *button) override;
     
     double getHighPassFrequency();
+    
+    double getLowPassFrequency();
 
 private:
     DJAudioPlayer* player;

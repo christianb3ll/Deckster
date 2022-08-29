@@ -37,6 +37,8 @@ class DJAudioPlayer : public AudioSource {
     
         void setFilterCoefficients(IIRCoefficients coefficients);
     
+        void deactivateFilter();
+    
     private:
         AudioFormatManager&  formatManager;
         std::unique_ptr<AudioFormatReaderSource> readerSource;

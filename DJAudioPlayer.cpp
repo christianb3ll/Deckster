@@ -21,6 +21,7 @@ void DJAudioPlayer::prepareToPlay (int samplesPerBlockExpected, double sampleRat
   
     transportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
     resampleSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    
     filterSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 
@@ -140,4 +141,8 @@ void DJAudioPlayer::toggleLoop(){
 
 void DJAudioPlayer::setFilterCoefficients(IIRCoefficients coefficients){
     filterSource.setCoefficients(coefficients);
+}
+
+void DJAudioPlayer::deactivateFilter(){
+    filterSource.makeInactive();
 }
