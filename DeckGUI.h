@@ -65,8 +65,9 @@ private:
     TextButton playButton{"PLAY"};
     TextButton stopButton{"STOP"};
     TextButton loadButton{"LOAD"};
-    TextButton rewindButton{"REWIND"};
+//    TextButton rewindButton{"REWIND"};
     TextButton fastforwardButton{"FAST FORWARD"};
+    TextButton loopButton{"LOOP"};
     
     TextButton testButton{"Test"};
     

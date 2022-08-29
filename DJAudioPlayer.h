@@ -44,4 +44,5 @@ class DJAudioPlayer : public AudioSource {
         AudioTransportSource transportSource;
         ResamplingAudioSource resampleSource{&transportSource, false, 2};
         IIRFilterAudioSource filterSource{&resampleSource, false};
+        bool looping = false;
 };

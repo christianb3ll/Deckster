@@ -13,8 +13,9 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     addAndMakeVisible(playButton);
     addAndMakeVisible(stopButton);
     addAndMakeVisible(loadButton);
-    addAndMakeVisible(rewindButton);
+//    addAndMakeVisible(rewindButton);
     addAndMakeVisible(fastforwardButton);
+    addAndMakeVisible(loopButton);
     
     addAndMakeVisible(testButton);
     
@@ -29,8 +30,9 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     playButton.addListener(this);
     stopButton.addListener(this);
     loadButton.addListener(this);
-    rewindButton.addListener(this);
+//    rewindButton.addListener(this);
     fastforwardButton.addListener(this);
+    loopButton.addListener(this);
     
     testButton.addListener(this);
     
@@ -103,11 +105,12 @@ void DeckGUI::resized()
     waveformDisplay.setBounds(0, waveformDisplaylArea, getWidth(), rowH*2);
     
     double buttonWidth = getWidth()/6;
-    rewindButton.setBounds(0, playbackControlArea,  buttonWidth, rowH);
-    speedSlider.setBounds(buttonWidth, playbackControlArea, buttonWidth, rowH);
-    stopButton.setBounds(buttonWidth*2, playbackControlArea, buttonWidth, rowH);
-    playButton.setBounds(buttonWidth*3, playbackControlArea, buttonWidth, rowH);
-    fastforwardButton.setBounds(buttonWidth*4, playbackControlArea, buttonWidth, rowH);
+    
+    speedSlider.setBounds(0, playbackControlArea,  buttonWidth, rowH);
+    stopButton.setBounds(buttonWidth, playbackControlArea, buttonWidth, rowH);
+    playButton.setBounds(buttonWidth*2, playbackControlArea, buttonWidth, rowH);
+    fastforwardButton.setBounds(buttonWidth*3, playbackControlArea, buttonWidth, rowH);
+    loopButton.setBounds(buttonWidth*4, playbackControlArea, buttonWidth, rowH);
     loadButton.setBounds(buttonWidth*5, playbackControlArea, buttonWidth, rowH);
     
     
@@ -145,10 +148,10 @@ void DeckGUI::buttonClicked(Button * button){
 
     }
     
-    if(button == &rewindButton){
-        std::cout << "Rewind Button clicked" << std::endl;
-        
-    }
+//    if(button == &rewindButton){
+//        std::cout << "Rewind Button clicked" << std::endl;
+//
+//    }
     
     if(button == &fastforwardButton){
         std::cout << "Fast Forward Button clicked" << std::endl;
@@ -157,6 +160,11 @@ void DeckGUI::buttonClicked(Button * button){
     
     if(button == &testButton){
         std::cout << "test Button clicked" << std::endl;
+        player->toggleLoop();
+    }
+    
+    if(button == &loopButton){
+        std::cout << "loop Button clicked" << std::endl;
         player->toggleLoop();
     }
     
