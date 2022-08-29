@@ -29,9 +29,9 @@ PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI
     // Initialize the filtered tracklist to be the full tracklist
     filteredTracks = trackList;
                                         
-    tableComponent.getHeader().addColumn("Track title", 1, 200);
-    tableComponent.getHeader().addColumn("Runtime", 2, 100);
-    tableComponent.getHeader().addColumn("Filepath", 3, 100);
+    tableComponent.getHeader().addColumn("Track title", 1, 300, TableHeaderComponent::notSortable);
+    tableComponent.getHeader().addColumn("Runtime", 2, 100, TableHeaderComponent::notSortable);
+    tableComponent.getHeader().addColumn("Filepath", 3, 300, TableHeaderComponent::notSortable);
                                         
     tableComponent.setModel(this);
     
@@ -145,6 +145,9 @@ void PlaylistComponent::paintCell(Graphics & g,  int rowNumber, int columnId, in
 
 void PlaylistComponent::buttonClicked(Button* button){
     if(button == &importButton){
+        // Reset the search bar on import
+        searchBar.setText("",true);
+        
         std::cout << "import button clicked " << std::endl;
         FileChooser chooser{"Select a file"};
         if(chooser.browseForFileToOpen()){
@@ -202,6 +205,7 @@ void PlaylistComponent::buttonClicked(Button* button){
 
 void PlaylistComponent::addToPlaylist(AudioTrack track){
     trackList.push_back(track);
+    filteredTracks.push_back(track);
     
     // Write the current trackList to CSV file
     CSVProcessor::writeCSVFile(&trackList, playlistFilepath);

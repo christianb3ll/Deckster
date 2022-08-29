@@ -23,14 +23,14 @@ Equalizer::Equalizer(DJAudioPlayer* _player)
     
     // HighPass Slider
     highPassSlider.addListener(this);
-    highPassSlider.setRange(100.0, 10000.0);
+    highPassSlider.setRange(1.4, 22000.0);
     highPassSlider.setSliderStyle(Slider::LinearVertical);
     highPassSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, highPassSlider.getTextBoxWidth(), highPassSlider.getTextBoxHeight());
     highPassSlider.setNumDecimalPlacesToDisplay(0);
     
     // LowPass Slider
     lowPassSlider.addListener(this);
-    lowPassSlider.setRange(100.0, 10000.0);
+    lowPassSlider.setRange(2.0, 200.0);
     lowPassSlider.setSliderStyle(Slider::LinearVertical);
     lowPassSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, lowPassSlider.getTextBoxWidth(), lowPassSlider.getTextBoxHeight());
     lowPassSlider.setNumDecimalPlacesToDisplay(0);
