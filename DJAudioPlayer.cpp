@@ -137,7 +137,8 @@ void DJAudioPlayer::test(){
 
 //readerSource->setLooping(true);
 void DJAudioPlayer::toggleLoop(){
-    readerSource->setLooping(true);
+    // toggle track looping on/off
+    readerSource->setLooping(!looping);
 }
 
 void DJAudioPlayer::setFilterCoefficients(IIRCoefficients coefficients){
