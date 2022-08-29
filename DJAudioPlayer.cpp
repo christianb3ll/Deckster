@@ -131,14 +131,11 @@ double DJAudioPlayer::getPositionRelative(){
 //}
 
 
-void DJAudioPlayer::test(){
-    std::cout << "I'm here" << std::endl;
-}
-
 //readerSource->setLooping(true);
 void DJAudioPlayer::toggleLoop(){
     // toggle track looping on/off
-    readerSource->setLooping(!looping);
+    this->looping = !looping;
+    readerSource->setLooping(looping);
 }
 
 void DJAudioPlayer::setFilterCoefficients(IIRCoefficients coefficients){

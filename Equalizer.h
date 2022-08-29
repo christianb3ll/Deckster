@@ -17,6 +17,7 @@
 /*
 */
 class Equalizer  : public juce::Component,
+                   public Button::Listener,
                    public Slider::Listener
 {
 public:
@@ -28,16 +29,22 @@ public:
     
     void sliderValueChanged(Slider *slider) override;
     
+    void buttonClicked(Button *button) override;
+    
     double getHighPassFrequency();
 
 private:
     DJAudioPlayer* player;
+    
     Slider highPassSlider;
-//    Label highPassLabel;
+    ToggleButton highPassToggle{"High Pass"};
     double highPassFreq;
+    bool highPass = false;
     
     Slider lowPassSlider;
-//    Label lowPassLabel;
+    ToggleButton lowPassToggle{"Low Pass"};
     double lowPassFreq;
+    bool lowPass = false;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Equalizer)
 };

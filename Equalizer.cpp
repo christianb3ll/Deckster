@@ -18,36 +18,31 @@ Equalizer::Equalizer(DJAudioPlayer* _player)
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
     addAndMakeVisible(highPassSlider);
+    addAndMakeVisible(highPassToggle);
+    
     addAndMakeVisible(lowPassSlider);
+    addAndMakeVisible(lowPassToggle);
     
     
     // HighPass Slider
     highPassSlider.addListener(this);
-    highPassSlider.setRange(1.4, 22000.0);
+    highPassToggle.addListener(this);
+    highPassSlider.setRange(1000, 20000.0);
     highPassSlider.setSliderStyle(Slider::LinearVertical);
     highPassSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, highPassSlider.getTextBoxWidth(), highPassSlider.getTextBoxHeight());
     highPassSlider.setNumDecimalPlacesToDisplay(0);
+    highPassSlider.setEnabled(highPass);
+    
+    
     
     // LowPass Slider
     lowPassSlider.addListener(this);
-    lowPassSlider.setRange(2.0, 200.0);
+    lowPassToggle.addListener(this);
+    lowPassSlider.setRange(2.0, 500.0);
     lowPassSlider.setSliderStyle(Slider::LinearVertical);
     lowPassSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, lowPassSlider.getTextBoxWidth(), lowPassSlider.getTextBoxHeight());
     lowPassSlider.setNumDecimalPlacesToDisplay(0);
-    
-//    highPassLabel.setFont(18.0);
-//    highPassLabel.setText("High Pass", NotificationType::dontSendNotification);
-//    highPassLabel.setColour(Label::ColourIds::textColourId, juce::Colours::black);
-//    highPassLabel.setJustificationType(Justification::centredBottom);
-//    highPassLabel.attachToComponent(&highPassSlider, false);
-//    
-//    
-//    lowPassLabel.setFont(18.0);
-//    lowPassLabel.setText("Low Pass", NotificationType::dontSendNotification);
-//    lowPassLabel.setColour(Label::ColourIds::textColourId, juce::Colours::black);
-//    lowPassLabel.setJustificationType(Justification::centredBottom);
-//    lowPassLabel.attachToComponent(&lowPassSlider, false);
-    
+    lowPassSlider.setEnabled(lowPass);
 }
 
 Equalizer::~Equalizer()
@@ -70,15 +65,11 @@ void Equalizer::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::black);
     g.setFont (14.0f);
-//    g.drawText ("Equalizer", getLocalBounds(),
-//                juce::Justification::centred, true);   // draw some placeholder text
     
     // Draw the EQ Dividers
     g.setColour (Colour(184,184,184));
-    g.drawRect (getWidth()/3, 10, 1, getHeight()-20);
-    g.drawRect ((getWidth()/3)*2, 10, 1, getHeight()-20);
+    g.drawRect (getWidth()/2, 10, 1, getHeight()-20);
     
-    // Draw the labels
     
     
 }
@@ -87,8 +78,11 @@ void Equalizer::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    highPassSlider.setBounds(0, 0, getWidth()/3, getHeight());
-    lowPassSlider.setBounds(getWidth()/3, 0, getWidth()/3, getHeight());
+    highPassToggle.setBounds(0, 0, getWidth()/4, getHeight());
+    highPassSlider.setBounds(getWidth()/4, 0, getWidth()/4, getHeight());
+    
+    lowPassToggle.setBounds(getWidth()/2, 0, getWidth()/4, getHeight());
+    lowPassSlider.setBounds((getWidth()/4)*3, 0, getWidth()/4, getHeight());
 
 }
 
@@ -103,6 +97,18 @@ void Equalizer::sliderValueChanged(Slider *slider){
         player->setFilterCoefficients(IIRCoefficients::makeLowPass(44000, this->lowPassFreq));
     }
     
+}
+
+void Equalizer::buttonClicked(Button *button){
+    if(button == &highPassToggle){
+        this->highPass = !highPass;
+        highPassSlider.setEnabled(highPass);
+    }
+    
+    if(button == &lowPassToggle){
+        this->lowPass = !lowPass;
+        lowPassSlider.setEnabled(lowPass);
+    }
 }
 
 double Equalizer::getHighPassFrequency(){
