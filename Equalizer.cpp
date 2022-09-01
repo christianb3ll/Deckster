@@ -28,7 +28,7 @@ Equalizer::Equalizer(DJAudioPlayer* _player)
     highPassSlider.addListener(this);
     highPassToggle.addListener(this);
     highPassSlider.setRange(10, 20000.0);
-    highPassSlider.setValue(1000);
+    highPassSlider.setValue(10);
     highPassSlider.setSliderStyle(Slider::LinearVertical);
     highPassSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, highPassSlider.getTextBoxWidth(), highPassSlider.getTextBoxHeight());
     highPassSlider.setNumDecimalPlacesToDisplay(0);
@@ -91,12 +91,12 @@ void Equalizer::resized()
 void Equalizer::sliderValueChanged(Slider *slider){
     if(slider == &highPassSlider){
         this->highPassFreq = slider->getValue();
-        player->setFilterCoefficients(IIRCoefficients::makeHighPass(44000, this->highPassFreq));
+        player->setHighPassCoefficients(IIRCoefficients::makeHighPass(41000, this->highPassFreq));
     }
     
     if(slider == &lowPassSlider){
         this->lowPassFreq = slider->getValue();
-        player->setFilterCoefficients(IIRCoefficients::makeLowPass(44000, this->lowPassFreq));
+        player->setLowPassCoefficients(IIRCoefficients::makeLowPass(41000, this->lowPassFreq));
     }
     
 }
@@ -111,6 +111,7 @@ void Equalizer::buttonClicked(Button *button){
     if(button == &lowPassToggle){
         this->lowPass = !lowPass;
         lowPassSlider.setEnabled(lowPass);
+        if(!highPass) player->deactivateFilter("lowPass");
     }
 }
 

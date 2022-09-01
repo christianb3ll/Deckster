@@ -22,18 +22,23 @@ void DJAudioPlayer::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     transportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
     resampleSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
     
-    filterSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    filter1.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    filter2.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    
 }
 
 void DJAudioPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) {
 //    resampleSource.getNextAudioBlock(bufferToFill);
-    filterSource.getNextAudioBlock(bufferToFill);
+     
+    filter2.getNextAudioBlock(bufferToFill);
+//    if(lowPass) lowPassFilterSource.getNextAudioBlock(bufferToFill);
 }
 
 void DJAudioPlayer::releaseResources() {
     transportSource.releaseResources();
     resampleSource.releaseResources();
-    filterSource.releaseResources();
+    filter1.releaseResources();
+    filter2.releaseResources();
 }
 
 void DJAudioPlayer::loadURL(URL audioURL){
@@ -107,30 +112,6 @@ double DJAudioPlayer::getPositionRelative(){
 }
 
 
-//std::string DJAudioPlayer::getTrackRuntime(URL audioURL){
-//    std::string trackRuntime;
-//    
-//    
-//    double lengthSeconds = 0;
-//    
-//    auto* reader = this->formatManager.createReaderFor(audioURL.createInputStream(false));
-//    
-//    if(reader != nullptr){
-//        std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource(reader,true));
-//        transportSource.setSource(newSource.get(),0,nullptr, reader->sampleRate);
-//    
-//        lengthSeconds = reader->lengthInSamples / reader->sampleRate;
-//        delete reader;
-//    
-//        trackRuntime = std::to_string(lengthSeconds);
-//        
-//        
-//    }
-//    
-//
-//    return trackRuntime;
-//}
-
 
 //readerSource->setLooping(true);
 void DJAudioPlayer::toggleLoop(){
@@ -139,13 +120,21 @@ void DJAudioPlayer::toggleLoop(){
     readerSource->setLooping(looping);
 }
 
-void DJAudioPlayer::setFilterCoefficients(IIRCoefficients coefficients){
-    filterSource.setCoefficients(coefficients);
+void DJAudioPlayer::setHighPassCoefficients(IIRCoefficients coefficients){
+    filter1.setCoefficients(coefficients);
+}
+
+void DJAudioPlayer::setLowPassCoefficients(IIRCoefficients coefficients){
+    filter2.setCoefficients(coefficients);
 }
 
 void DJAudioPlayer::deactivateFilter(std::string filter){
     if(filter == "highPass"){
-        filterSource.makeInactive();
+        filter1.makeInactive();
+    }
+    
+    if(filter == "lowPass"){
+        filter2.makeInactive();
     }
     
 }

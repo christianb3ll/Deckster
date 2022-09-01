@@ -50,6 +50,26 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 //    posSlider.setRange(0.0, 1.0);
     
     startTimer(500);
+    
+    // Set up Play Button images
+    Image playIcon = ImageCache::getFromMemory(BinaryData::playbutton_png, BinaryData::playbutton_pngSize);
+    playButton.setImages (false, false, true, playIcon, 1.0f, {}, playIcon, 0.8f, {}, playIcon, 1.0f, {juce::Colours::transparentWhite});
+    
+    // Set up Stop Button images
+    Image pauseIcon = ImageCache::getFromMemory(BinaryData::pausebutton_png, BinaryData::pausebutton_pngSize);
+    stopButton.setImages (false, false, true, pauseIcon, 1.0f, {}, pauseIcon, 0.8f, {}, pauseIcon, 1.0f, {juce::Colours::transparentWhite});
+    
+    // Set up Fast Forward Button images
+    Image fastforwardIcon = ImageCache::getFromMemory(BinaryData::fastforwardbutton_png, BinaryData::fastforwardbutton_pngSize);
+    fastforwardButton.setImages (false, false, true, fastforwardIcon, 1.0f, {}, fastforwardIcon, 0.8f, {}, fastforwardIcon, 1.0f, {juce::Colours::transparentWhite});
+    
+    // Set up Loop Button images
+    Image loopIcon = ImageCache::getFromMemory(BinaryData::loopbutton_png, BinaryData::loopbutton_pngSize);
+    loopButton.setImages (false, false, true, loopIcon, 1.0f, {}, loopIcon, 0.8f, {}, loopIcon, 1.0f, {juce::Colours::transparentWhite});
+    
+    // Set up Load Button images
+    Image loadIcon = ImageCache::getFromMemory(BinaryData::loadbutton_png, BinaryData::loadbutton_pngSize);
+    loadButton.setImages (false, false, true, loadIcon, 1.0f, {}, loadIcon, 0.8f, {}, loadIcon, 1.0f, {juce::Colours::transparentWhite});
 }
 
 DeckGUI::~DeckGUI()

@@ -62,12 +62,17 @@ public:
     void mouseDown(const MouseEvent &event) override;
     
 private:
-    TextButton playButton{"PLAY"};
-    TextButton stopButton{"STOP"};
-    TextButton loadButton{"LOAD"};
+    ImageButton playButton;
+    ImageButton stopButton;
+    ImageButton loadButton;
+//    TextButton playButton{"PLAY"};
+//    TextButton stopButton{"STOP"};
+//    TextButton loadButton{"LOAD"};
 //    TextButton rewindButton{"REWIND"};
-    TextButton fastforwardButton{"FAST FORWARD"};
-    TextButton loopButton{"LOOP"};
+    ImageButton fastforwardButton;
+//    TextButton fastforwardButton{"FAST FORWARD"};
+    ImageButton loopButton;
+//    TextButton loopButton{"LOOP"};
     
     TextButton testButton{"Test"};
     

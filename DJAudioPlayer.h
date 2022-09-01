@@ -35,7 +35,9 @@ class DJAudioPlayer : public AudioSource {
     
         void toggleLoop();
     
-        void setFilterCoefficients(IIRCoefficients coefficients);
+        void setHighPassCoefficients(IIRCoefficients coefficients);
+    
+        void setLowPassCoefficients(IIRCoefficients coefficients);
     
         void deactivateFilter(std::string filter);
     
@@ -44,6 +46,8 @@ class DJAudioPlayer : public AudioSource {
         std::unique_ptr<AudioFormatReaderSource> readerSource;
         AudioTransportSource transportSource;
         ResamplingAudioSource resampleSource{&transportSource, false, 2};
-        IIRFilterAudioSource filterSource{&resampleSource, false};
+        IIRFilterAudioSource filter1{&resampleSource, false};
+        IIRFilterAudioSource filter2{&filter1, false};
+    
         bool looping = false;
 };
