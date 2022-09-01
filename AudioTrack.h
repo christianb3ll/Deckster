@@ -16,9 +16,13 @@ class AudioTrack {
         /** constructor creates a new AudioTrack with given values
          * @param _trackTitle - string representing track title
          * @param _trackLength - string representing track length
+         * @param _trackSampleRate - string representing track sample length
+         * @param _trackType - string representing track type
          * @param _filepath - string track filepath   */
         AudioTrack(std::string _trackTitle,
                    std::string _trackLength,
+                   std::string _sampleRate,
+                   std::string _fileType,
                    std::string _filepath);
         
         /** Destructor for AudioTrack class */
@@ -32,6 +36,14 @@ class AudioTrack {
          * @return string track length */
         std::string getTrackLength();
     
+        /** returns the tracks sample rate as a string
+         * @return string track sample rate */
+        std::string getTrackSampleRate();
+        
+        /** returns the track type as a string
+         * @return string track type */
+        std::string getTrackType();
+    
         /** returns the track filepath as a string
          * @return String track filepath */
         std::string getTrackFilepath();
@@ -44,6 +56,8 @@ class AudioTrack {
     private:
         std::string trackTitle;
         std::string trackLength;
+        std::string sampleRate;
+        std::string fileType;
         std::string filepath;
 
 };

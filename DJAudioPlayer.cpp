@@ -143,6 +143,9 @@ void DJAudioPlayer::setFilterCoefficients(IIRCoefficients coefficients){
     filterSource.setCoefficients(coefficients);
 }
 
-void DJAudioPlayer::deactivateFilter(){
-    filterSource.makeInactive();
+void DJAudioPlayer::deactivateFilter(std::string filter){
+    if(filter == "highPass"){
+        filterSource.makeInactive();
+    }
+    
 }

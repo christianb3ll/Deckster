@@ -31,7 +31,9 @@ PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI
                                         
     tableComponent.getHeader().addColumn("Track title", 1, 300, TableHeaderComponent::notSortable);
     tableComponent.getHeader().addColumn("Runtime", 2, 100, TableHeaderComponent::notSortable);
-    tableComponent.getHeader().addColumn("Filepath", 3, 300, TableHeaderComponent::notSortable);
+    tableComponent.getHeader().addColumn("Sample Rate", 3, 100, TableHeaderComponent::notSortable);
+    tableComponent.getHeader().addColumn("File Type", 4, 100, TableHeaderComponent::notSortable);
+    tableComponent.getHeader().addColumn("Filepath", 5, 200, TableHeaderComponent::notSortable);
                                         
     tableComponent.setModel(this);
     
@@ -115,8 +117,17 @@ void PlaylistComponent::paintCell(Graphics & g,  int rowNumber, int columnId, in
     if(columnId == 2){
         g.drawText(filteredTracks[rowNumber].getTrackLength(), 2, 0, width - 2, height, Justification::centredLeft, true);
     }
-    // Track filepath column
+    // Sample Rate column
     if(columnId == 3){
+        g.drawText(filteredTracks[rowNumber].getTrackSampleRate(), 2, 0, width - 2, height, Justification::centredLeft, true);
+    }
+    // Filepath column
+    if(columnId == 4){
+        g.drawText(filteredTracks[rowNumber].getTrackType(), 2, 0, width - 2, height, Justification::centredLeft, true);
+    }
+    
+    // Track filepath column
+    if(columnId == 5){
         g.drawText(filteredTracks[rowNumber].getTrackFilepath(), 2, 0, width - 2, height, Justification::centredLeft, true);
     }
 }
@@ -177,8 +188,6 @@ void PlaylistComponent::buttonClicked(Button* button){
         int trackId = tableComponent.getSelectedRow();
         
         std::cout << "Track:" << trackId << " selected" << std::endl;
-//        player1->loadURL(URL{trackList[trackId].getTrackFilepath()});
-//        deck1->player->loadURL(URL{trackList[trackId].getTrackFilepath()});
         deck1->loadTrack(URL{trackList[trackId].getTrackFilepath()});
         
     }
@@ -188,7 +197,6 @@ void PlaylistComponent::buttonClicked(Button* button){
         int trackId = tableComponent.getSelectedRow();
         
         std::cout << "Track:" << trackId << " selected" << std::endl;
-//        player2->loadURL(URL{trackList[trackId].getTrackFilepath()});
         deck2->loadTrack(URL{trackList[trackId].getTrackFilepath()});
     }
         
@@ -243,21 +251,29 @@ AudioTrack PlaylistComponent::URLToAudioTrack(URL audioURL){
     
     std::string trackTitle = audioURL.getFileName().toStdString();
     std::string trackRuntime;
+    std::string sampleRate;
+    std::string fileType;
     
     double lengthSeconds = 0;
 
     auto* reader = this->formatManager.createReaderFor(audioURL.createInputStream(false));
 
     if(reader != nullptr){
-//        std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource(reader,true));
-//        transportSource.setSource(newSource.get(),0,nullptr, reader->sampleRate);
-
         lengthSeconds = reader->lengthInSamples / reader->sampleRate;
-//        delete reader;
+        
+        
+        int minutes = int(lengthSeconds / 60);
+        int seconds = int(lengthSeconds) % 60;
+        trackRuntime = std::to_string(minutes) + ":" + std::to_string(seconds);
+        
+        sampleRate = std::to_string(int(reader->sampleRate));
+        
+        // https://www.codespeedy.com/get-the-extension-of-a-file-in-cpp
+        // store the position of last '.' in the file name
+        int pos = trackTitle.find_last_of(".");
+        //store the characters after the '.' from the file_name string
+        fileType = trackTitle.substr(pos+1);
 
-        trackRuntime = std::to_string(lengthSeconds);
-
-//        newSource.reset(newSource.release());
         delete reader;
     }
     
@@ -267,7 +283,7 @@ AudioTrack PlaylistComponent::URLToAudioTrack(URL audioURL){
     
     
     
-    AudioTrack track(trackTitle, trackRuntime, trackURL);
+    AudioTrack track(trackTitle, trackRuntime, sampleRate, fileType, trackURL);
     
     
     return track;

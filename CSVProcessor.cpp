@@ -26,10 +26,12 @@ std::vector<AudioTrack> CSVProcessor::readCSVFile(std::string csvFilename){
                 // Create strings for each token
                 std::string title = trackTokens[0];
                 std::string runtime = trackTokens[1];
-                std::string filepath = trackTokens[2];
+                std::string sampleRate = trackTokens[2];
+                std::string fileType = trackTokens[3];
+                std::string filepath = trackTokens[4];
                 
                 // create an audio track object
-                AudioTrack track{title,runtime,filepath};
+                AudioTrack track{title,runtime,sampleRate,fileType,filepath};
                 
                 std::cout << "Track details are: " + title + ", " + runtime + ", " + filepath  << std::endl;
                 
@@ -63,9 +65,11 @@ void CSVProcessor::writeCSVFile(std::vector<AudioTrack>* tracks, std::string pla
           for(AudioTrack track : *tracks){
               std::string trackName = track.getTrackTitle();
               std::string runtime = track.getTrackLength();
+              std::string sampleRate = track.getTrackSampleRate();
+              std::string fileType = track.getTrackType();
               std::string filepath = track.getTrackFilepath();
 
-              CSVFile << trackName << "," << runtime << "," << filepath << "\n";
+              CSVFile << trackName << "," << runtime << "," << sampleRate << "," << fileType << "," << filepath << "\n";
           }
           CSVFile.close();
           std::cout << "csv file written" << std::endl;
@@ -74,52 +78,6 @@ void CSVProcessor::writeCSVFile(std::vector<AudioTrack>* tracks, std::string pla
         std::cout << "Unable to write file" << std::endl;
     }
 }
-
-
-//void CSVProcessor::writeVectorTest(std::vector<AudioTrack>* tracks, std::string playlist){
-//    std::ofstream CSVFile(playlist, std::ios::trunc);
-//    if (CSVFile.is_open())
-//      {
-//          for(AudioTrack track : *tracks){
-//              std::string trackName = track.getTrackTitle();
-//              std::string runtime = track.getTrackLength();
-//              std::string filepath = track.getTrackFilepath();
-//
-//              CSVFile << trackName << ", " << runtime << ", " << filepath << "\n";
-//          }
-//          CSVFile.close();
-//          std::cout << "csv file written" << std::endl;
-//      }
-//    else {
-//        std::cout << "Unable to write file" << std::endl;
-//    }
-//}
-
-
-
-
-bool CSVProcessor::writeTest(std::string trackName, std::string trackDuration, std::string filepath, std::string playlist){
-    std::ofstream CSVFile(playlist, std::ios::trunc);
-    if (CSVFile.is_open())
-      {
-          CSVFile << trackName << "," << trackDuration << "," << filepath << "\n";
-          
-          CSVFile.close();
-          std::cout << "csv file written" << std::endl;
-          
-          return true;
-      }
-    else {
-        std::cout << "Unable to write file" << std::endl;
-        return false;
-    }
-        
-}
-
-
-
-
-
 
 
 /** Converts a string to tokens based on a given seperator */

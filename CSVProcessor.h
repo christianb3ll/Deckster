@@ -31,13 +31,6 @@ class CSVProcessor {
         static void writeCSVFile(std::vector<AudioTrack>* tracks, std::string playlist);
     
         
-    
-        // DELETE
-        static bool writeTest(std::string trackName, std::string trackDuration, std::string filepath, std::string playlist);
-        
-        // DELETE
-//        static void writeVectorTest(std::vector<AudioTrack>* tracks, std::string playlist);
-    
         
     
         /** Converts a string to tokens based on a given seperator
