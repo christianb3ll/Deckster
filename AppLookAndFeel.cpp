@@ -1,0 +1,92 @@
+/*
+  ==============================================================================
+
+    AppLookAndFeel.cpp
+    Created: 1 Sep 2022 9:36:11pm
+    Author:  Christian Bell
+
+  ==============================================================================
+*/
+#include <JuceHeader.h>
+#include "AppLookAndFeel.h"
+
+
+
+//==============================================================================
+AppLookAndFeel::AppLookAndFeel()
+{
+}
+
+AppLookAndFeel::~AppLookAndFeel()
+{
+}
+
+void AppLookAndFeel::drawRotarySlider(juce::Graphics& g,
+                      int x,
+                      int y,
+                      int width,
+                      int height,
+                      float sliderPos,
+                      const float rotaryStartAngle,
+                      const float rotaryEndAngle,
+                      juce::Slider&){
+    // https://docs.juce.com/master/tutorial_look_and_feel_customisation.html
+    auto radius = (float) juce::jmin (width / 2, height / 2) - 4.0f;
+    auto centreX = (float) x + (float) width  * 0.5f;
+    auto centreY = (float) y + (float) height * 0.5f;
+    auto rx = centreX - radius;
+    auto ry = centreY - radius;
+    auto rw = radius * 2.0f;
+    auto angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+    
+    // fill
+    g.setColour(Colour(200,200,200));
+    g.fillEllipse (rx, ry, rw, rw);
+
+    // outline
+    g.setColour(Colour(150,150,150));
+    g.drawEllipse (rx, ry, rw, rw, 1.0f);
+    
+    juce::Path p;
+    auto pointerLength = radius * 0.33f;
+    auto pointerThickness = 2.0f;
+    p.addRectangle(-pointerThickness * 0.5f, -radius, pointerThickness, pointerLength);
+    p.applyTransform(juce::AffineTransform::rotation (angle).translated (centreX, centreY));
+    
+    // pointer
+    g.setColour(Colour(100,100,100));
+    g.fillPath(p);
+}
+
+
+//void AppLookAndFeel::drawLinearSlider(Graphics& g,
+//                                int x,
+//                                int y,
+//                                int width,
+//                                int height,
+//                                float sliderPos,
+//                                float minSliderPos,
+//                                float maxSliderPos,
+//                                const Slider::SliderStyle style,
+//                                Slider &){
+//    g.setColour(Colour(255,0,0));
+////    Rectangle<int> test = Rectangle(maxSliderPos, y, 5, height);
+////    g.drawRect(test);
+//    g.drawEllipse(maxSliderPos, y, 20, height, 8);
+//}
+
+
+void AppLookAndFeel::drawButtonBackground(juce::Graphics& g,
+                          juce::Button& button,
+                          const juce::Colour& backgroundColour,
+                          bool isHighlighted,
+                          bool isButtonDown){
+    auto buttonArea = button.getLocalBounds();
+    g.setColour(backgroundColour);
+    g.drawRect(buttonArea);
+    
+    if(isButtonDown) g.fillRect(buttonArea);
+    
+}
+
+

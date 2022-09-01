@@ -2,6 +2,7 @@
 #include "DeckGUI.h"
 #include "Equalizer.h"
 
+
 //==============================================================================
 DeckGUI::DeckGUI(DJAudioPlayer* _player,
                  AudioFormatManager & formatManagerToUse,
@@ -47,6 +48,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     speedSlider.setRange(1,20.0);
     speedSlider.setSliderStyle(Slider::Rotary);
     speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+//    speedSlider.setLookAndFeel(&appLookAndFeel);
 //    posSlider.setRange(0.0, 1.0);
     
     startTimer(500);
@@ -74,6 +76,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 
 DeckGUI::~DeckGUI()
 {
+//    setLookAndFeel(nullptr);
     stopTimer();
 }
 
@@ -95,12 +98,12 @@ void DeckGUI::paint (juce::Graphics& g)
     g.setColour(Colour(217, 217, 217));
     g.drawRect(0, 0, getWidth(), getHeight()/6);
     //draw the speaker holes
-    g.setColour (juce::Colours::black);
-    for (auto i = 0; i < 4; ++i){
-        for (auto j = 0; j < 10; ++j){
-            g.fillEllipse(getWidth()/3 + (22*j), (getHeight()/6)/3 + (14*i), 10, 10);
-        }
-    }
+//    g.setColour (juce::Colours::black);
+//    for (auto i = 0; i < 4; ++i){
+//        for (auto j = 0; j < 10; ++j){
+//            g.fillEllipse(getWidth()/3 + (22*j), (getHeight()/6)/3 + (14*i), 10, 10);
+//        }
+//    }
 //    g.fillEllipse(getWidth()/3, (getHeight()/6)/3, 8, 8);
     
     

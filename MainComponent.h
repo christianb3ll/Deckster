@@ -5,6 +5,7 @@
 #include "DeckGUI.h"
 #include "PlaylistComponent.h"
 #include "VolumeMixer.h"
+#include "AppLookAndFeel.h"
 
 //==============================================================================
 /*
@@ -31,6 +32,7 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
+    AppLookAndFeel appLookAndFeel;
     AudioFormatManager formatManager;
     AudioThumbnailCache thumbCache{100};
     

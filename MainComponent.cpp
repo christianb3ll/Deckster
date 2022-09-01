@@ -7,7 +7,26 @@ MainComponent::MainComponent()
     // you add any child components.
     setSize (800, 900);
     
+    // Setup the Look and Feel
+    setLookAndFeel(&appLookAndFeel);
+    
+    // Main Window
     getLookAndFeel().setColour (juce::ResizableWindow::backgroundColourId, Colour(217,217,217));
+    
+    // Toggle Button
+    getLookAndFeel().setColour(juce::ToggleButton::textColourId, juce::Colours::black);
+    getLookAndFeel().setColour(juce::ToggleButton::tickColourId, juce::Colours::black);
+    getLookAndFeel().setColour(juce::ToggleButton::tickDisabledColourId, juce::Colours::black);
+    
+    // Default Slider
+    getLookAndFeel().setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::black);
+    getLookAndFeel().setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
+    getLookAndFeel().setColour(juce::Slider::thumbColourId, juce::Colours::white);
+    
+    // Labels
+    getLookAndFeel().setColour(juce::Label::textColourId, juce::Colours::black);
+    
+    
 
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
@@ -37,6 +56,7 @@ MainComponent::~MainComponent()
 {
     // This shuts down the audio device and clears the audio source.
     shutdownAudio();
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================

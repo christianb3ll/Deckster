@@ -20,7 +20,12 @@ VolumeMixer::VolumeMixer(DJAudioPlayer* _player1, DJAudioPlayer* _player2)
     // initialise any special settings that your component needs.
     addAndMakeVisible(deck1Slider);
     addAndMakeVisible(deck2Slider);
+    addAndMakeVisible(deck1Label);
+    addAndMakeVisible(deck2Label);
     
+    
+    deck1Label.attachToComponent(&deck1Slider,true);
+    deck2Label.attachToComponent(&deck2Slider,true);
     
     deck1Slider.addListener(this);
     deck2Slider.addListener(this);
@@ -30,6 +35,9 @@ VolumeMixer::VolumeMixer(DJAudioPlayer* _player1, DJAudioPlayer* _player2)
     
     deck1Slider.setValue(1.0);
     deck2Slider.setValue(1.0);
+    
+    deck1Slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    deck2Slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     
     
 }
@@ -59,8 +67,11 @@ void VolumeMixer::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    deck1Slider.setBounds(0, 0, getWidth()/2, getHeight());
-    deck2Slider.setBounds(getWidth()/2, 0, getWidth()/2, getHeight());
+    
+    double sliderWidth = getWidth()/4;
+    double labelWidth = 50;
+    deck1Slider.setBounds(labelWidth, 0, sliderWidth, getHeight());
+    deck2Slider.setBounds(getWidth() - sliderWidth, 0, sliderWidth, getHeight());
 
 }
 

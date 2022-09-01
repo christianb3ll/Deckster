@@ -12,6 +12,7 @@
 #include "DJAudioPlayer.h"
 #include "WaveformDisplay.h"
 #include "Equalizer.h"
+#include "AppLookAndFeel.h"
 
 class DeckGUI  : public juce::Component,
                  public Button::Listener,
@@ -81,7 +82,7 @@ private:
 //    Slider posSlider;
     
     
-    
+//    AppLookAndFeel appLookAndFeel;
     DJAudioPlayer* player;
     
     Equalizer equalizer{player};
