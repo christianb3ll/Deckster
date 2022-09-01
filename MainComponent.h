@@ -4,6 +4,7 @@
 #include "DJAudioPlayer.h"
 #include "DeckGUI.h"
 #include "PlaylistComponent.h"
+#include "VolumeMixer.h"
 
 //==============================================================================
 /*
@@ -38,6 +39,8 @@ private:
     
     DJAudioPlayer player2{formatManager};
     DeckGUI deckGUI2{&player2, formatManager, thumbCache};
+    
+    VolumeMixer volumeMixer{&player1, &player2};
     
     MixerAudioSource mixerSource;
     

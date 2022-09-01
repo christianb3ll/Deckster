@@ -7,7 +7,7 @@ MainComponent::MainComponent()
     // you add any child components.
     setSize (800, 900);
     
-    getLookAndFeel().setColour (juce::ResizableWindow::backgroundColourId, Colour(169,0,0));
+    getLookAndFeel().setColour (juce::ResizableWindow::backgroundColourId, Colour(217,217,217));
 
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
@@ -24,6 +24,8 @@ MainComponent::MainComponent()
     
     addAndMakeVisible(deckGUI1);
     addAndMakeVisible(deckGUI2);
+    
+    addAndMakeVisible(volumeMixer);
     
     addAndMakeVisible(playlistComponent);
     
@@ -91,5 +93,8 @@ void MainComponent::resized()
     double deckHeight = getHeight() - getHeight()/3;
     deckGUI1.setBounds(5, 5, (getWidth()/2)-10, deckHeight-10);
     deckGUI2.setBounds(getWidth()/2 +5, 5, (getWidth()/2)-10, deckHeight-10);
-    playlistComponent.setBounds(5, deckHeight+5, getWidth()-10, (getHeight()/3)-10);
+    
+    double mixerHeight = 50;
+    volumeMixer.setBounds(5,deckHeight, getWidth()-10,mixerHeight);
+    playlistComponent.setBounds(5, deckHeight + mixerHeight+5, getWidth()-10, (getHeight()/3)-mixerHeight-10);
 }
