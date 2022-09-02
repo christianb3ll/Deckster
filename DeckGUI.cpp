@@ -25,6 +25,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 //    addAndMakeVisible(posSlider);
     
     addAndMakeVisible(waveformDisplay);
+    addAndMakeVisible(tapeDeck);
     
     addAndMakeVisible(equalizer);
     
@@ -48,7 +49,6 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     speedSlider.setRange(1,20.0);
     speedSlider.setSliderStyle(Slider::Rotary);
     speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-//    speedSlider.setLookAndFeel(&appLookAndFeel);
 //    posSlider.setRange(0.0, 1.0);
     
     startTimer(500);
@@ -76,7 +76,6 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 
 DeckGUI::~DeckGUI()
 {
-//    setLookAndFeel(nullptr);
     stopTimer();
 }
 
@@ -94,28 +93,14 @@ void DeckGUI::paint (juce::Graphics& g)
     g.setColour (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
 
-    // Draw the speaker
-    g.setColour(Colour(217, 217, 217));
-    g.drawRect(0, 0, getWidth(), getHeight()/6);
-    //draw the speaker holes
-//    g.setColour (juce::Colours::black);
-//    for (auto i = 0; i < 4; ++i){
-//        for (auto j = 0; j < 10; ++j){
-//            g.fillEllipse(getWidth()/3 + (22*j), (getHeight()/6)/3 + (14*i), 10, 10);
-//        }
-//    }
-//    g.fillEllipse(getWidth()/3, (getHeight()/6)/3, 8, 8);
     
     
     
-    // Draw the tapedeck
-    g.setColour(Colour(107, 107, 107));
-    g.drawRect(0, getHeight()/6, getWidth(), (getHeight()/6)*2);
-    
-//    g.setColour (juce::Colours::white);
-//    g.setFont (14.0f);
-//    g.drawText ("DeckGUI", getLocalBounds(),
-//                juce::Justification::centred, true);
+    // draw jog wheel shadow
+    DropShadow jogWheelShadow = DropShadow(Colour(0.0f,0.0f,0.0f,0.15f), 3, Point<int>(2,4));
+    Path jogWheel;
+    jogWheel.addEllipse(0, (getHeight()/2) + (getHeight()/8)*2, getWidth()/6, getHeight()/8);
+    jogWheelShadow.drawForPath(g, jogWheel);
 }
 
 void DeckGUI::resized()
@@ -125,6 +110,7 @@ void DeckGUI::resized()
     double playbackControlArea = waveformDisplaylArea + (rowH*2);
     double equalizerArea = playbackControlArea + rowH;
     
+    tapeDeck.setBounds(0, 0, getWidth(), getHeight()/2);
     waveformDisplay.setBounds(0, waveformDisplaylArea, getWidth(), rowH*2);
     
     double buttonWidth = getWidth()/6;

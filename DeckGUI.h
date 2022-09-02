@@ -13,6 +13,7 @@
 #include "WaveformDisplay.h"
 #include "Equalizer.h"
 #include "AppLookAndFeel.h"
+#include "TapeDeck.h"
 
 class DeckGUI  : public juce::Component,
                  public Button::Listener,
@@ -81,12 +82,12 @@ private:
     Slider speedSlider;
 //    Slider posSlider;
     
-    
-//    AppLookAndFeel appLookAndFeel;
+
     DJAudioPlayer* player;
     
     Equalizer equalizer{player};
     
+    TapeDeck tapeDeck;
     WaveformDisplay waveformDisplay;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeckGUI)

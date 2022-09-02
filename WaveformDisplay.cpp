@@ -33,9 +33,10 @@ void WaveformDisplay::paint (juce::Graphics& g)
     // Draw the waveform and playhead
     g.setColour (juce::Colours::limegreen);
     if(fileLoaded){
-        audioThumb.drawChannel(g, getLocalBounds(), 0, audioThumb.getTotalLength(), 0, 1.0f);
+        audioThumb.drawChannel(g, getLocalBounds().reduced(10), 0, audioThumb.getTotalLength(), 0, 1.0f);
         g.setColour(Colour(255,122,0));
-        g.drawRect(position * getWidth(), 0, 2, getHeight());
+        g.drawRect(10 + (position * getWidth()), 10, 2, getHeight()-20);
+        
     } else {
         g.setFont (20.0f);
         g.drawText ("File not loaded...", getLocalBounds(),

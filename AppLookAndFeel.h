@@ -22,6 +22,8 @@ public:
     AppLookAndFeel();
     ~AppLookAndFeel() override;
     
+    void setupLookAndFeel(LookAndFeel& lookAndFeel);
+    
     void drawRotarySlider(juce::Graphics& g,
                           int x,
                           int y,

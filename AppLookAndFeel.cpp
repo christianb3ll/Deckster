@@ -21,6 +21,27 @@ AppLookAndFeel::~AppLookAndFeel()
 {
 }
 
+void AppLookAndFeel::setupLookAndFeel(LookAndFeel& lookAndFeel){
+    // Main Window
+    lookAndFeel.setColour (juce::ResizableWindow::backgroundColourId, Colour(217,217,217));
+    
+    // Buttons
+    lookAndFeel.setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+    
+    // Toggle Button
+    lookAndFeel.setColour(juce::ToggleButton::textColourId, juce::Colours::black);
+    lookAndFeel.setColour(juce::ToggleButton::tickColourId, juce::Colours::black);
+    lookAndFeel.setColour(juce::ToggleButton::tickDisabledColourId, juce::Colours::black);
+    
+    // Default Slider
+    lookAndFeel.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::black);
+    lookAndFeel.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
+    lookAndFeel.setColour(juce::Slider::thumbColourId, juce::Colours::white);
+    
+    // Labels
+    lookAndFeel.setColour(juce::Label::textColourId, juce::Colours::black);
+}
+
 void AppLookAndFeel::drawRotarySlider(juce::Graphics& g,
                       int x,
                       int y,
