@@ -48,45 +48,47 @@ public:
      * @param slider pointer to a slider */
     void sliderValueChanged(Slider *slider) override;
     
+    /** called when slider drag has ended
+     * @param slider pointer to a slider */
     void sliderDragEnded(Slider *slider) override;
 
     
+    /** Callback to check whether this target is interested in the set of files being offered.
+     * @param &files - address of a string array of files
+     * @return bool */
+    bool isInterestedInFileDrag(const StringArray &files) override;
     
-    bool isInterestedInFileDrag (const StringArray &files) override;
-    
-    void filesDropped (const StringArray &files, int x, int y) override;
+    /** Callback to indicate that the user has dropped the files onto this component.
+     * @param &files - string array of files
+     * @param x - int x drop location
+     * @param y - int y drop location */
+    void filesDropped(const StringArray &files, int x, int y) override;
 
+    /** user-defined callback routine that gets called periodically */
     void timerCallback() override;
     
+    /** Loads a track into the deck
+     * @param track - track URL */
     void loadTrack(URL track);
     
-    
+    /** detects mouse clicks
+     * @param &event - address of a mouse event */
     void mouseDown(const MouseEvent &event) override;
     
 private:
+    // Image Buttons
     ImageButton playButton;
     ImageButton stopButton;
     ImageButton loadButton;
-//    TextButton playButton{"PLAY"};
-//    TextButton stopButton{"STOP"};
-//    TextButton loadButton{"LOAD"};
-//    TextButton rewindButton{"REWIND"};
     ImageButton fastforwardButton;
-//    TextButton fastforwardButton{"FAST FORWARD"};
     ImageButton loopButton;
-//    TextButton loopButton{"LOOP"};
     
-    TextButton testButton{"Test"};
-    
+    // Sliders
     Slider volSlider;
     Slider speedSlider;
-//    Slider posSlider;
     
-
     DJAudioPlayer* player;
-    
     Equalizer equalizer{player};
-    
     TapeDeck tapeDeck;
     WaveformDisplay waveformDisplay;
     

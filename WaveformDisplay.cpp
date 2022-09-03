@@ -18,10 +18,11 @@ WaveformDisplay::~WaveformDisplay()
 /** gets called when a region of a component needs redrawing */
 void WaveformDisplay::paint (juce::Graphics& g)
 {
+    // Draw background
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId)); 
-
+    // draw border
     g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+    g.drawRect (getLocalBounds(), 1);
 
     // Draw waveform window
     g.setColour (Colour(57,57,57));
@@ -38,16 +39,13 @@ void WaveformDisplay::paint (juce::Graphics& g)
     } else {
         g.setFont (20.0f);
         g.drawText ("File not loaded...", getLocalBounds(),
-                    juce::Justification::centred, true);   // draw some placeholder text
+                    juce::Justification::centred, true);
     }
 }
 
 /** Called when this component's size has been changed. */
 void WaveformDisplay::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
-
 }
 
 /** Receives change event callbacks that are sent out by a ChangeBroadcaster. */

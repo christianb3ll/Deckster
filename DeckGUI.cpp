@@ -2,57 +2,53 @@
 #include "DeckGUI.h"
 #include "Equalizer.h"
 
-
-//==============================================================================
+/** Constructor for DJAudioPlayer class */
 DeckGUI::DeckGUI(DJAudioPlayer* _player,
                  AudioFormatManager & formatManagerToUse,
                  AudioThumbnailCache & cacheToUse
                  ) : player(_player),
                      waveformDisplay(formatManagerToUse, cacheToUse)
 {
-    
+    // Buttons
     addAndMakeVisible(playButton);
     addAndMakeVisible(stopButton);
     addAndMakeVisible(loadButton);
-//    addAndMakeVisible(rewindButton);
     addAndMakeVisible(fastforwardButton);
     addAndMakeVisible(loopButton);
     
-    addAndMakeVisible(testButton);
-    
+    // Sliders
     addAndMakeVisible(volSlider);
     addAndMakeVisible(speedSlider);
-//    addAndMakeVisible(posSlider);
     
+    // Child components
     addAndMakeVisible(waveformDisplay);
     addAndMakeVisible(tapeDeck);
-    
     addAndMakeVisible(equalizer);
     
+    // Button Listeners
     playButton.addListener(this);
     stopButton.addListener(this);
     loadButton.addListener(this);
-//    rewindButton.addListener(this);
     fastforwardButton.addListener(this);
     loopButton.addListener(this);
     
-    testButton.addListener(this);
-    
+    // Slider Listeners
     volSlider.addListener(this);
     speedSlider.addListener(this);
-//    posSlider.addListener(this);
     
-    // maybe delete
+    // Moiuse Listener
     waveformDisplay.addMouseListener(this, false);
 
+    // Setup Sliders
     volSlider.setRange(0.0, 1.0);
     speedSlider.setRange(1,20.0);
     speedSlider.setSliderStyle(Slider::Rotary);
     speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-//    posSlider.setRange(0.0, 1.0);
     
+    // Setup Timer
     startTimer(500);
     
+    // Setup the Image Buttons
     // Set up Play Button images
     Image playIcon = ImageCache::getFromMemory(BinaryData::playbutton_png, BinaryData::playbutton_pngSize);
     playButton.setImages (false, false, true, playIcon, 1.0f, {}, playIcon, 0.8f, {}, playIcon, 1.0f, {juce::Colours::transparentWhite});
@@ -74,28 +70,21 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     loadButton.setImages (false, false, true, loadIcon, 1.0f, {}, loadIcon, 0.8f, {}, loadIcon, 1.0f, {juce::Colours::transparentWhite});
 }
 
+/** Constructor for DJAudioPlayer class */
 DeckGUI::~DeckGUI()
 {
     stopTimer();
 }
 
+/** gets called when a region of a component needs redrawing */
 void DeckGUI::paint (juce::Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));    // clear the background
-
+    // Draw the background
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    // Draw the border
     g.setColour (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+    g.drawRect (getLocalBounds(), 1);
 
-    
-    
-    
     // draw jog wheel shadow
     DropShadow jogWheelShadow = DropShadow(Colour(0.0f,0.0f,0.0f,0.15f), 3, Point<int>(2,4));
     Path jogWheel;
@@ -103,82 +92,59 @@ void DeckGUI::paint (juce::Graphics& g)
     jogWheelShadow.drawForPath(g, jogWheel);
 }
 
+/** Called when this component's size has been changed. */
 void DeckGUI::resized()
 {
+    // Setup area dimensions
     double rowH = getHeight()/8;
     double waveformDisplaylArea = getHeight()/2;
     double playbackControlArea = waveformDisplaylArea + (rowH*2);
     double equalizerArea = playbackControlArea + rowH;
     
+    // Set bounds of child components
     tapeDeck.setBounds(0, 0, getWidth(), getHeight()/2);
     waveformDisplay.setBounds(0, waveformDisplaylArea, getWidth(), rowH*2);
+    equalizer.setBounds(0, equalizerArea, getWidth(), rowH);
     
+    // Set button and slider bounds
     double buttonWidth = getWidth()/6;
-    
     speedSlider.setBounds(0, playbackControlArea,  buttonWidth, rowH);
     stopButton.setBounds(buttonWidth, playbackControlArea, buttonWidth, rowH);
     playButton.setBounds(buttonWidth*2, playbackControlArea, buttonWidth, rowH);
     fastforwardButton.setBounds(buttonWidth*3, playbackControlArea, buttonWidth, rowH);
     loopButton.setBounds(buttonWidth*4, playbackControlArea, buttonWidth, rowH);
     loadButton.setBounds(buttonWidth*5, playbackControlArea, buttonWidth, rowH);
-    
-    
-//    volSlider.setBounds(0, rowH*3, getWidth(), rowH);
-
-//    posSlider.setBounds(0, rowH*5, getWidth(), rowH);
-   
-//    testButton.setBounds(0, rowH*5, getWidth(), rowH);
-    
-    equalizer.setBounds(0, equalizerArea, getWidth(), rowH);
-
 }
 
+/** Detects a button click and takes appropriate action depending on button clicked */
 void DeckGUI::buttonClicked(Button * button){
     
     // if the pointer for  button is equal to address of play button
     if(button == &playButton){
-        std::cout << "Play Button clicked" << std::endl;
         player->start();
     }
 
     if(button == &stopButton){
-        std::cout << "Stop Button clicked" << std::endl;
         player->stop();
     }
 
     if(button == &loadButton){
-        std::cout << "Load Button clicked" << std::endl;
         FileChooser chooser{"Select a file"};
         if(chooser.browseForFileToOpen()){
-//            player->loadURL(URL{chooser.getResult()});
-//            waveformDisplay.loadURL(URL{chooser.getResult()});
             loadTrack(URL{chooser.getResult()});
         }
-
     }
     
-//    if(button == &rewindButton){
-//        std::cout << "Rewind Button clicked" << std::endl;
-//
-//    }
-    
     if(button == &fastforwardButton){
-        std::cout << "Fast Forward Button clicked" << std::endl;
         player->setSpeed(5.0);
     }
     
-    if(button == &testButton){
-        std::cout << "test Button clicked" << std::endl;
-        player->toggleLoop();
-    }
-    
     if(button == &loopButton){
-        std::cout << "loop Button clicked" << std::endl;
         player->toggleLoop();
     }
-    
 }
 
+/** Detects changes to sliders and updates values */
 void DeckGUI::sliderValueChanged(Slider *slider){
     if(slider == &volSlider){
         player->setGain(slider->getValue());
@@ -187,6 +153,7 @@ void DeckGUI::sliderValueChanged(Slider *slider){
     if(slider == &speedSlider){
         double speed = slider->getValue();
         player->setSpeed(speed);
+        // Send speed to tapeDeck component to update tape image
         this->tapeDeck.setSpeed(speed);
     }
 
@@ -196,41 +163,44 @@ void DeckGUI::sliderValueChanged(Slider *slider){
 //    }
 }
 
+/** called when slider drag has ended */
 void DeckGUI::sliderDragEnded(Slider *slider){
     if(slider == &speedSlider){
         speedSlider.setValue(1.0, sendNotification);
     }
 }
 
+/** Callback to check whether this target is interested in the set of files being offered. */
 bool DeckGUI::isInterestedInFileDrag (const StringArray &files){
     return true;
 }
 
+/** Callback to indicate that the user has dropped the files onto this component. */
 void DeckGUI::filesDropped (const StringArray &files, int x, int y){
-    
-    std::cout << "file dropped" << std::endl;
+    // if a single file dropped, load the track
     if(files.size() == 1){
-//        player->loadURL(URL{File{files[0]}});
-//        waveformDisplay.loadURL(URL{File{files[0]}});
         loadTrack(URL{File{files[0]}});
     }
 }
 
+/** user-defined callback routine that gets called periodically */
 void DeckGUI::timerCallback(){
     waveformDisplay.setPositionRelative(player->getPositionRelative());
+    // set the position for tapedeck
     tapeDeck.setPositionRelative(player->getPositionRelative());
 }
 
+/** Loads a track into the deck */
 void DeckGUI::loadTrack(URL track){
     player->loadURL(URL{track});
     waveformDisplay.loadURL(URL{track});
 }
 
-
+/** detects mouse clicks */
 void DeckGUI::mouseDown(const MouseEvent &event){
     double mousePos = event.getMouseDownX();
     double relPos = mousePos / getWidth();
-    std::cout << relPos << std::endl;
     
+    // detects mouse clicks on the waveform and send relative position to player
     player->setPositionRelative(relPos);
 }
