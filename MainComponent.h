@@ -31,7 +31,6 @@ public:
 
 private:
     //==============================================================================
-    // Your private member variables go here...
     AppLookAndFeel appLookAndFeel;
     AudioFormatManager formatManager;
     AudioThumbnailCache thumbCache{100};
