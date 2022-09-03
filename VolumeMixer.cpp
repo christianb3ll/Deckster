@@ -1,28 +1,15 @@
-/*
-  ==============================================================================
-
-    VolumeMixer.cpp
-    Created: 1 Sep 2022 5:25:48pm
-    Author:  Christian Bell
-
-  ==============================================================================
-*/
-
 #include <JuceHeader.h>
 #include "VolumeMixer.h"
 
-//==============================================================================
+/** Constructor for VolumeMixer class */
 VolumeMixer::VolumeMixer(DJAudioPlayer* _player1, DJAudioPlayer* _player2)
                         : player1(_player1),
                           player2(_player2)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
     addAndMakeVisible(deck1Slider);
     addAndMakeVisible(deck2Slider);
     addAndMakeVisible(deck1Label);
     addAndMakeVisible(deck2Label);
-    
     
     deck1Label.attachToComponent(&deck1Slider,true);
     deck2Label.attachToComponent(&deck2Slider,true);
@@ -38,48 +25,40 @@ VolumeMixer::VolumeMixer(DJAudioPlayer* _player1, DJAudioPlayer* _player2)
     
     deck1Slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     deck2Slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    
-    
 }
 
+/** Destructor for VolumeMixer class */
 VolumeMixer::~VolumeMixer()
 {
 }
 
+/** gets called when a region of a component needs redrawing */
 void VolumeMixer::paint (juce::Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
-
+    // Draw the background
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    // Draw the border
     g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
- 
+    g.drawRect (getLocalBounds(), 1); 
 }
 
+/** Called when this component's size has been changed. */
 void VolumeMixer::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
-    
     double sliderWidth = getWidth()/4;
     double labelWidth = 50;
     deck1Slider.setBounds(labelWidth, 0, sliderWidth, getHeight());
     deck2Slider.setBounds(getWidth() - sliderWidth, 0, sliderWidth, getHeight());
-
 }
 
+/** Detects changes to sliders and updates values */
 void VolumeMixer::sliderValueChanged(Slider *slider){
+    // Deck 1 slider
     if(slider == &deck1Slider){
         player1->setGain(slider->getValue());
     }
     
+    // Deck 2 slider
     if(slider == &deck2Slider){
         player2->setGain(slider->getValue());
     }
