@@ -1,26 +1,17 @@
-/*
-  ==============================================================================
-
-    AppLookAndFeel.cpp
-    Created: 1 Sep 2022 9:36:11pm
-    Author:  Christian Bell
-
-  ==============================================================================
-*/
 #include <JuceHeader.h>
 #include "AppLookAndFeel.h"
 
-
-
-//==============================================================================
+/** Constructor for AppLookAndFeel */
 AppLookAndFeel::AppLookAndFeel()
 {
 }
 
+/** Destructor for AppLookAndFeel */
 AppLookAndFeel::~AppLookAndFeel()
 {
 }
 
+/** Sets up a given LookAndFeel */
 void AppLookAndFeel::setupLookAndFeel(LookAndFeel& lookAndFeel){
     // Main Window
     lookAndFeel.setColour (juce::ResizableWindow::backgroundColourId, Colour(217,217,217));
@@ -42,6 +33,7 @@ void AppLookAndFeel::setupLookAndFeel(LookAndFeel& lookAndFeel){
     lookAndFeel.setColour(juce::Label::textColourId, juce::Colours::black);
 }
 
+/** Draws a rotary slider. Overides default Juce rotary slider */
 void AppLookAndFeel::drawRotarySlider(juce::Graphics& g,
                       int x,
                       int y,
@@ -50,7 +42,7 @@ void AppLookAndFeel::drawRotarySlider(juce::Graphics& g,
                       float sliderPos,
                       const float rotaryStartAngle,
                       const float rotaryEndAngle,
-                      juce::Slider&){
+                      juce::Slider& slider){
     // https://docs.juce.com/master/tutorial_look_and_feel_customisation.html
     auto radius = (float) juce::jmin (width / 2, height / 2) - 4.0f;
     auto centreX = (float) x + (float) width  * 0.5f;
@@ -96,7 +88,8 @@ void AppLookAndFeel::drawRotarySlider(juce::Graphics& g,
 //    g.drawEllipse(maxSliderPos, y, 20, height, 8);
 //}
 
-
+/** Draws the background for standard buttons
+ * overrides default Juse button drawing */
 void AppLookAndFeel::drawButtonBackground(juce::Graphics& g,
                           juce::Button& button,
                           const juce::Colour& backgroundColour,
