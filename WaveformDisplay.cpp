@@ -7,8 +7,6 @@ WaveformDisplay::WaveformDisplay(AudioFormatManager & formatManagerToUse,
                                         fileLoaded(false),
                                         position(0)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
     audioThumb.addChangeListener(this);
 }
 

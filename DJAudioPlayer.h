@@ -31,6 +31,8 @@ class DJAudioPlayer : public AudioSource {
     
         /** Get the relative position of the playhead */
         double getPositionRelative();
+    
+        double getSpeedRatio();
         
     
         void toggleLoop();

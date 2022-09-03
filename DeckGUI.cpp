@@ -185,7 +185,9 @@ void DeckGUI::sliderValueChanged(Slider *slider){
     }
 
     if(slider == &speedSlider){
-        player->setSpeed(slider->getValue());
+        double speed = slider->getValue();
+        player->setSpeed(speed);
+        this->tapeDeck.setSpeed(speed);
     }
 
     // Removed. Position can now be set on waveform directly
@@ -216,6 +218,7 @@ void DeckGUI::filesDropped (const StringArray &files, int x, int y){
 
 void DeckGUI::timerCallback(){
     waveformDisplay.setPositionRelative(player->getPositionRelative());
+    tapeDeck.setPositionRelative(player->getPositionRelative());
 }
 
 void DeckGUI::loadTrack(URL track){
