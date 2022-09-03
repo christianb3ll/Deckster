@@ -1,39 +1,31 @@
-/*
-  ==============================================================================
-
-    DJAudioPlayer.cpp
-    Created: 15 Jul 2021 10:26:17pm
-    Author:  Christian Bell
-
-  ==============================================================================
-*/
-
 #include "DJAudioPlayer.h"
 
+/** Consttructor for DJAudioPlayer */
 DJAudioPlayer::DJAudioPlayer(AudioFormatManager& _formatManager)
                             : formatManager(_formatManager){
 }
 
+/** Destructor for DJAudioPlayer */
 DJAudioPlayer::~DJAudioPlayer(){
 }
 
+/** Tells the source to prepare for playing */
 void DJAudioPlayer::prepareToPlay (int samplesPerBlockExpected, double sampleRate) {
   
     transportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
     resampleSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
-    
+    // prepare the filters
     filter1.prepareToPlay(samplesPerBlockExpected, sampleRate);
     filter2.prepareToPlay(samplesPerBlockExpected, sampleRate);
     
 }
 
+/** Called repeatedly to fetch subsequent blocks of audio data */
 void DJAudioPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) {
-//    resampleSource.getNextAudioBlock(bufferToFill);
-     
     filter2.getNextAudioBlock(bufferToFill);
-//    if(lowPass) lowPassFilterSource.getNextAudioBlock(bufferToFill);
 }
 
+/** Allows the source to release anything it no longer needs after playback has stopped */
 void DJAudioPlayer::releaseResources() {
     transportSource.releaseResources();
     resampleSource.releaseResources();
@@ -41,31 +33,23 @@ void DJAudioPlayer::releaseResources() {
     filter2.releaseResources();
 }
 
+/** loads a given audio URL */
 void DJAudioPlayer::loadURL(URL audioURL){
+    // Updated - previous version deprecated
     auto* reader = this->formatManager.createReaderFor(audioURL.createInputStream(URL::InputStreamOptions{ URL::ParameterHandling::inAddress }));
-    
     
     if(reader != nullptr){
         std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource(reader,true));
         transportSource.setSource(newSource.get(),0,nullptr, reader->sampleRate);
         
-        std::cout << "Loaded URL" << std::endl;
-        
-//        std::cout << reader->metadataValues.getAllKeys().size() << std::endl;
-        
-//        for (String key : reader->metadataValues.getAllKeys()) {
-//            std::cout << "Key: " + key + " value: " + reader->metadataValues.getValue(key, "unknown") << std::endl;
-//        }
-//
-//
         readerSource.reset(newSource.release());
-        
     }
     else {
         std::cout << "Invalid URL" << std::endl;
     }
 }
 
+/** sets the gain for the player */
 void DJAudioPlayer::setGain(double gain){
     if(gain < 0 || gain > 1.0){
         std::cout << "DJAudioPlayer::setGain gain should be between 0 and 1" << std::endl;
@@ -74,6 +58,7 @@ void DJAudioPlayer::setGain(double gain){
     }
 }
 
+/** sets the speed for the player */
 void DJAudioPlayer::setSpeed(double ratio){
     if(ratio <= 0 || ratio > 100.0){
         std::cout << "DJAudioPlayer::setSpeed ratio should be between 0 and 100" << std::endl;
@@ -82,10 +67,12 @@ void DJAudioPlayer::setSpeed(double ratio){
     }
 }
 
+/** sets the position */
 void DJAudioPlayer::setPosition(double posInSecs){
     transportSource.setPosition(posInSecs);
 }
 
+/** sets the relative position */
 void DJAudioPlayer::setPositionRelative(double pos){
     if(pos < 0 || pos > 1.0){
         std::cout << "DJAudioPlayer::setSpeed ratio should be between 0 and 1" << std::endl;
@@ -95,14 +82,17 @@ void DJAudioPlayer::setPositionRelative(double pos){
     }
 }
 
+/** start the transport source */
 void DJAudioPlayer::start(){
     transportSource.start();
 }
 
+/** stop the transport source */
 void DJAudioPlayer::stop(){
     transportSource.stop();
 }
 
+/** Get the relative position of the playhead */
 double DJAudioPlayer::getPositionRelative(){
     if(transportSource.getLengthInSeconds() == 0){
         return 0;
@@ -111,23 +101,24 @@ double DJAudioPlayer::getPositionRelative(){
     }
 }
 
-
-
-//readerSource->setLooping(true);
+/** toggles looping playback */
 void DJAudioPlayer::toggleLoop(){
     // toggle track looping on/off
     this->looping = !looping;
     readerSource->setLooping(looping);
 }
 
+/** sets coefficients for the HighPass filter */
 void DJAudioPlayer::setHighPassCoefficients(IIRCoefficients coefficients){
     filter1.setCoefficients(coefficients);
 }
 
+/** sets coefficients for the LowPass filter */
 void DJAudioPlayer::setLowPassCoefficients(IIRCoefficients coefficients){
     filter2.setCoefficients(coefficients);
 }
 
+/** deactivates given filter */
 void DJAudioPlayer::deactivateFilter(std::string filter){
     if(filter == "highPass"){
         filter1.makeInactive();
