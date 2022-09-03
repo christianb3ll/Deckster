@@ -1,34 +1,22 @@
-/*
-  ==============================================================================
-
-    PlaylistComponent.cpp
-    Created: 5 Aug 2021 4:38:06pm
-    Author:  Christian Bell
-
-  ==============================================================================
-*/
-
 #include <JuceHeader.h>
 #include "PlaylistComponent.h"
 #include "CSVProcessor.h"
 #include "AudioTrack.h"
 
-
-//==============================================================================
+/** Constructor for PlaylistComponent */
 PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI* _deck1, DeckGUI* _deck2)
                                     : formatManager(_formatManager),
                                     deck1(_deck1),
                                     deck2(_deck2){
-                                        
+    // import the playlist and populate the trackList
     for(AudioTrack track : CSVProcessor::readCSVFile(playlistFilepath)){
-
-        // should it check for valid file here?
         trackList.push_back(track);
     }
     
     // Initialize the filtered tracklist to be the full tracklist
     filteredTracks = trackList;
-                                        
+                           
+    // Create the column headers
     tableComponent.getHeader().addColumn("Track title", 1, 300, TableHeaderComponent::notSortable);
     tableComponent.getHeader().addColumn("Runtime", 2, 100, TableHeaderComponent::notSortable);
     tableComponent.getHeader().addColumn("Sample Rate", 3, 100, TableHeaderComponent::notSortable);
@@ -40,66 +28,60 @@ PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI
     // Add mouse listener to the playlist component
     tableComponent.addMouseListener(this, true);
     
+    // Add button listeners
     importButton.addListener(this);
-                                        
     sendDeck1.addListener(this);
     sendDeck2.addListener(this);
     
     addAndMakeVisible(tableComponent);
-    
     addAndMakeVisible(importButton);
     addAndMakeVisible(searchBar);
     addAndMakeVisible(sendDeck1);
     addAndMakeVisible(sendDeck2);
     
-    
+    // Setup the search bar
     searchBar.setTextToShowWhenEmpty("Search Library...", juce::Colours::white);
     textEditorTextChanged(searchBar);
-    
     searchBar.addListener(this);
-    
 }
 
+/** Destructor for PlaylistComponent */
 PlaylistComponent::~PlaylistComponent()
 {
     tableComponent.setModel(nullptr);
 }
 
+/** Allows the source to release anything it no longer needs after playback has stopped */
 void PlaylistComponent::releaseResources() {
-//    transportSource.releaseResources();
 }
 
+/** gets called when a region of a component needs redrawing */
 void PlaylistComponent::paint (juce::Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
-
+    // Draw the background
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    // Draw the border
     g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("PlaylistComponent", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
+    g.drawRect (getLocalBounds(), 1);
 }
 
+/** Called when this component's size has been changed. */
 void PlaylistComponent::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
     tableComponent.setBounds(0, 50, getWidth(), getHeight());
-    
     importButton.setBounds(0, 0, (getWidth()/6), 50);
     sendDeck1.setBounds((getWidth()/6), 0, (getWidth()/6), 50);
     sendDeck2.setBounds(2*(getWidth()/6), 0, (getWidth()/6), 50);
-    
     searchBar.setBounds(getWidth()/2, 0, getWidth()/2, 50);
 }
 
+/** returns the number of rows as an int */
 int PlaylistComponent::getNumRows(){
     int playlistRows = static_cast<int>(filteredTracks.size());
     return playlistRows;
 }
 
+/** Draws the row background */
 void PlaylistComponent::paintRowBackground(Graphics & g, int rowNumber, int width, int height, bool rowIsSelected){
     if(rowIsSelected){
         g.fillAll(Colours::orange);
@@ -108,6 +90,7 @@ void PlaylistComponent::paintRowBackground(Graphics & g, int rowNumber, int widt
     }
 }
 
+/** Paints each cell */
 void PlaylistComponent::paintCell(Graphics & g,  int rowNumber, int columnId, int width, int height, bool rowIsSelected){
     // Track title column
     if(columnId == 1){
@@ -132,6 +115,7 @@ void PlaylistComponent::paintCell(Graphics & g,  int rowNumber, int columnId, in
     }
 }
 
+// Removed. Functionality moved to "Send Deck" buttons
 //Component*  PlaylistComponent::refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component *existingComponentToUpdate){
 //    if(columnId == 4){
 //        if(existingComponentToUpdate == nullptr){
@@ -154,63 +138,36 @@ void PlaylistComponent::paintCell(Graphics & g,  int rowNumber, int columnId, in
 //    return existingComponentToUpdate;
 //}
 
+/** Detects a button click and takes appropriate action depending on button clicked */
 void PlaylistComponent::buttonClicked(Button* button){
     if(button == &importButton){
         // Reset the search bar on import
         searchBar.setText("",true);
         
-        std::cout << "import button clicked " << std::endl;
         FileChooser chooser{"Select a file"};
         if(chooser.browseForFileToOpen()){
             
-            // check if valid file
-            
-            // create an AudioTrack object from URL
-            
-            // send the AudioTrack to the playlist
-            
-            
             URL fileURL = chooser.getURLResult();
-            std::cout << fileURL.toString(false) << std::endl;
-            
+            // Creat an AudioTrack from URL
             AudioTrack track = URLToAudioTrack(fileURL);
             
-            std::cout << track.getTrackTitle() << ", " << track.getTrackLength() << std::endl;
-            
+            // Add the AudioTrack to the playlist
             addToPlaylist(track);
-            
-            
-            
         }
     }
+    // Send to Deck 1
     if(button == &sendDeck1){
-        std::cout << "Send Deck 1" << std::endl;
         int trackId = tableComponent.getSelectedRow();
-        
-        std::cout << "Track:" << trackId << " selected" << std::endl;
         deck1->loadTrack(URL{trackList[trackId].getTrackFilepath()});
-        
     }
-    
+    // Send to Deck 2
     if(button == &sendDeck2){
-        std::cout << "Send Deck 2" << std::endl;
         int trackId = tableComponent.getSelectedRow();
-        
-        std::cout << "Track:" << trackId << " selected" << std::endl;
         deck2->loadTrack(URL{trackList[trackId].getTrackFilepath()});
     }
-        
-//    } else {
-//        int id = std::stoi(button->getComponentID().toStdString());
-//
-//        std::cout << "button clicked " << id << std::endl;
-//
-//
-//        player1->loadURL(URL{trackList[id].getTrackFilepath()});
-    
-    
 }
 
+/** Adds a given AudioTrack object to the playlist */
 void PlaylistComponent::addToPlaylist(AudioTrack track){
     trackList.push_back(track);
     filteredTracks.push_back(track);
@@ -222,16 +179,14 @@ void PlaylistComponent::addToPlaylist(AudioTrack track){
     tableComponent.updateContent();
 }
 
+/** called on TextEditor changes */
 void PlaylistComponent::textEditorTextChanged(TextEditor &searchBar){
-    
-    
-    std::cout << "Searching: " << searchBar.getText() << std::endl;
-    
+    // Clear the filtered tracks list
     filteredTracks.clear();
     
+    // filter the tracks
     for(AudioTrack track : trackList){
         if(String(track.getTrackTitle()).contains(searchBar.getText())){
-            std::cout << track.getTrackTitle() << std::endl;
             filteredTracks.push_back(track);
         }
     }
@@ -239,33 +194,28 @@ void PlaylistComponent::textEditorTextChanged(TextEditor &searchBar){
     tableComponent.updateContent();
 }
 
-
-
-
-
-
+/** Converts a given audioURL to an AudioTrack object */
 AudioTrack PlaylistComponent::URLToAudioTrack(URL audioURL){
-    
-    // Add a check for valid file
-    
-    
+    // Set up string variables
     std::string trackTitle = audioURL.getFileName().toStdString();
     std::string trackRuntime;
     std::string sampleRate;
     std::string fileType;
     
     double lengthSeconds = 0;
-
+    // create a reader object
     auto* reader = this->formatManager.createReaderFor(audioURL.createInputStream(URL::InputStreamOptions{ URL::ParameterHandling::inAddress }));
-
+    // check for invalid file
     if(reader != nullptr){
+        // get the length in seconds
         lengthSeconds = reader->lengthInSamples / reader->sampleRate;
         
-        
+        // Convert to minutes / seconds
         int minutes = int(lengthSeconds / 60);
         int seconds = int(lengthSeconds) % 60;
         trackRuntime = std::to_string(minutes) + ":" + std::to_string(seconds);
         
+        // get the sample rate
         sampleRate = std::to_string(int(reader->sampleRate));
         
         // https://www.codespeedy.com/get-the-extension-of-a-file-in-cpp
@@ -277,14 +227,11 @@ AudioTrack PlaylistComponent::URLToAudioTrack(URL audioURL){
         delete reader;
     }
     
-    
+    // create track URL
     std::string trackURL = audioURL.toString(false).toStdString();
     
-    
-    
-    
+    // create a new AudioTrack
     AudioTrack track(trackTitle, trackRuntime, sampleRate, fileType, trackURL);
-    
     
     return track;
 }
