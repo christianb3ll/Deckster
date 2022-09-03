@@ -1,22 +1,10 @@
-/*
-  ==============================================================================
-
-    Equalizer.cpp
-    Created: 26 Aug 2022 5:23:52pm
-    Author:  Christian Bell
-
-  ==============================================================================
-*/
-
 #include <JuceHeader.h>
 #include "Equalizer.h"
 
-//==============================================================================
+/** Constructor for Equalizer class */
 Equalizer::Equalizer(DJAudioPlayer* _player)
                     : player(_player)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
     addAndMakeVisible(highPassSlider);
     addAndMakeVisible(highPassToggle);
     
@@ -34,8 +22,6 @@ Equalizer::Equalizer(DJAudioPlayer* _player)
     highPassSlider.setNumDecimalPlacesToDisplay(0);
     highPassSlider.setEnabled(highPass);
     
-    
-    
     // LowPass Slider
     lowPassSlider.addListener(this);
     lowPassToggle.addListener(this);
@@ -47,67 +33,61 @@ Equalizer::Equalizer(DJAudioPlayer* _player)
     lowPassSlider.setEnabled(lowPass);
 }
 
+/** Destructor for Equalizer class */
 Equalizer::~Equalizer()
 {
 }
 
+/** gets called when a region of a component needs redrawing */
 void Equalizer::paint (juce::Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
+    // Draw the background
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::black);
-    g.setFont (14.0f);
     
-    // Draw the EQ Dividers
+    // Draw the outline
+    g.setColour (juce::Colours::grey);
+    g.drawRect (getLocalBounds(), 1);
+    
+    // Draw the EQ Divider
     g.setColour (Colour(184,184,184));
     g.drawRect (getWidth()/2, 10, 1, getHeight()-20);
-    
-    
-    
 }
 
+/** Called when this component's size has been changed. */
 void Equalizer::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
     highPassToggle.setBounds(0, 0, getWidth()/4, getHeight());
     highPassSlider.setBounds(getWidth()/4, 0, getWidth()/4, getHeight());
     
     lowPassToggle.setBounds(getWidth()/2, 0, getWidth()/4, getHeight());
     lowPassSlider.setBounds((getWidth()/4)*3, 0, getWidth()/4, getHeight());
-
 }
 
+/** Detects changes to sliders and updates values */
 void Equalizer::sliderValueChanged(Slider *slider){
+    // High Pass Slider
     if(slider == &highPassSlider){
         this->highPassFreq = slider->getValue();
         player->setHighPassCoefficients(IIRCoefficients::makeHighPass(41000, this->highPassFreq));
     }
     
+    // Low Pass Slider
     if(slider == &lowPassSlider){
         this->lowPassFreq = slider->getValue();
         player->setLowPassCoefficients(IIRCoefficients::makeLowPass(41000, this->lowPassFreq));
     }
-    
 }
 
+/** Detects a button click and takes appropriate action depending on button clicked */
 void Equalizer::buttonClicked(Button *button){
+    // High Pass Toggle
     if(button == &highPassToggle){
         this->highPass = !highPass;
         highPassSlider.setEnabled(highPass);
         if(!highPass) player->deactivateFilter("highPass");
     }
     
+    // Low Pass Toggle
     if(button == &lowPassToggle){
         this->lowPass = !lowPass;
         lowPassSlider.setEnabled(lowPass);
@@ -115,10 +95,12 @@ void Equalizer::buttonClicked(Button *button){
     }
 }
 
+/** returns the highPassFrequency */
 double Equalizer::getHighPassFrequency(){
     return this->highPassFreq;
 }
 
+/** returns the lowPassFrequency */
 double Equalizer::getLowPassFrequency(){
     return this->lowPassFreq;
 }
