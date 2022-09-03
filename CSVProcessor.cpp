@@ -33,8 +33,6 @@ std::vector<AudioTrack> CSVProcessor::readCSVFile(std::string csvFilename){
                 // create an audio track object
                 AudioTrack track{title,runtime,sampleRate,fileType,filepath};
                 
-                std::cout << "Track details are: " + title + ", " + runtime + ", " + filepath  << std::endl;
-                
                 // Add the AudioTrack to the tracklist
                 tracks.push_back(track);
 
@@ -70,7 +68,6 @@ void CSVProcessor::writeCSVFile(std::vector<AudioTrack>* tracks, std::string pla
               CSVFile << trackName << "," << runtime << "," << sampleRate << "," << fileType << "," << filepath << "\n";
           }
           CSVFile.close();
-          std::cout << "csv file written" << std::endl;
       }
     else {
         std::cout << "Unable to write file" << std::endl;
