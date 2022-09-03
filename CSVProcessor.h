@@ -25,13 +25,10 @@ class CSVProcessor {
          * @return vector - a vector of AudioTrack objects */
         static std::vector<AudioTrack> readCSVFile(std::string csvFilename);
     
-        /** attempts to write XXXXX to a given CSV file and returns a boolean
-         * @param
-         * @return */
+        /** attempts to write a vecotr of AudioTrack objects to a given CSV filepath
+         * @param tracks - a vector of AudioTrack objects
+         * @param playlist - string playlist filepath  */
         static void writeCSVFile(std::vector<AudioTrack>* tracks, std::string playlist);
-    
-        
-        
     
         /** Converts a string to tokens based on a given seperator
          * @param csvLine a string representing a line from a csv file

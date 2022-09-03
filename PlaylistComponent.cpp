@@ -256,7 +256,7 @@ AudioTrack PlaylistComponent::URLToAudioTrack(URL audioURL){
     
     double lengthSeconds = 0;
 
-    auto* reader = this->formatManager.createReaderFor(audioURL.createInputStream(false));
+    auto* reader = this->formatManager.createReaderFor(audioURL.createInputStream(URL::InputStreamOptions{ URL::ParameterHandling::inAddress }));
 
     if(reader != nullptr){
         lengthSeconds = reader->lengthInSamples / reader->sampleRate;
@@ -270,7 +270,7 @@ AudioTrack PlaylistComponent::URLToAudioTrack(URL audioURL){
         
         // https://www.codespeedy.com/get-the-extension-of-a-file-in-cpp
         // store the position of last '.' in the file name
-        int pos = trackTitle.find_last_of(".");
+        int pos = int(trackTitle.find_last_of("."));
         //store the characters after the '.' from the file_name string
         fileType = trackTitle.substr(pos+1);
 

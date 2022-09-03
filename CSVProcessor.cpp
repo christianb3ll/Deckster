@@ -41,7 +41,6 @@ std::vector<AudioTrack> CSVProcessor::readCSVFile(std::string csvFilename){
             // catch improperly formatted data
             } catch(const std::exception& e) {
                 std::cout << "Bad data" << std::endl;
-                
             }
         }
         // close the file
@@ -56,8 +55,7 @@ std::vector<AudioTrack> CSVProcessor::readCSVFile(std::string csvFilename){
     }
 }
 
-
-
+/** attempts to write a vecotr of AudioTrack objects to a given CSV filepath */
 void CSVProcessor::writeCSVFile(std::vector<AudioTrack>* tracks, std::string playlist){
     std::ofstream CSVFile(playlist, std::ios::trunc);
     if (CSVFile.is_open())
@@ -79,17 +77,16 @@ void CSVProcessor::writeCSVFile(std::vector<AudioTrack>* tracks, std::string pla
     }
 }
 
-
 /** Converts a string to tokens based on a given seperator */
 std::vector<std::string> CSVProcessor::tokenize(std::string csvLine, char separator){
     std::vector<std::string> tokens;
     std::string token;
     
     signed int start, end;
-    start = csvLine.find_first_not_of(separator,0);
+    start = int(csvLine.find_first_not_of(separator,0));
     
     do {
-        end = csvLine.find_first_of(separator, start);
+        end = int(csvLine.find_first_of(separator, start));
         if(start == csvLine.length() || start == end) break;
         if(end >= 0) token = csvLine.substr(start, end - start);
         else token = csvLine.substr(start, csvLine.length() - start);
