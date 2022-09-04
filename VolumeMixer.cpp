@@ -46,8 +46,7 @@ void VolumeMixer::paint (juce::Graphics& g)
 void VolumeMixer::resized()
 {
     double sliderWidth = getWidth()/4;
-    double labelWidth = 50;
-    deck1Slider.setBounds(labelWidth, 0, sliderWidth, getHeight());
+    deck1Slider.setBounds(getWidth()/2 - sliderWidth, 0, sliderWidth, getHeight());
     deck2Slider.setBounds(getWidth() - sliderWidth, 0, sliderWidth, getHeight());
 }
 

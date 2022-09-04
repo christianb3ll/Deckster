@@ -41,7 +41,10 @@ void DJAudioPlayer::loadURL(URL audioURL){
     if(reader != nullptr){
         std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource(reader,true));
         transportSource.setSource(newSource.get(),0,nullptr, reader->sampleRate);
-        
+        // set the current sample rate
+        this->currentSampleRate = reader->sampleRate;
+        // Set the current track name
+        this->currentTrack = audioURL.getFileName().toStdString();
         readerSource.reset(newSource.release());
     }
     else {
@@ -101,11 +104,38 @@ double DJAudioPlayer::getPositionRelative(){
     }
 }
 
+/** get the current track title */
+std::string DJAudioPlayer::getCurrentTrack(){
+    return this->currentTrack;
+}
+
+/** set the current track title */
+void DJAudioPlayer::setCurrentTrack(std::string title){
+    this->currentTrack = title;
+}
+
+/** get the current track sample rate */
+int DJAudioPlayer::getCurrentSampleRate(){
+    return this->currentSampleRate;
+}
+
+/** set the current track sample rate  */
+void DJAudioPlayer::setCurrentSampleRate(int sampleRate){
+    this->currentSampleRate = sampleRate;
+}
+
 /** toggles looping playback */
 void DJAudioPlayer::toggleLoop(){
-    // toggle track looping on/off
-    this->looping = !looping;
-    readerSource->setLooping(looping);
+    if(readerSource != nullptr){
+        // toggle track looping on/off
+        this->looping = !looping;
+        readerSource->setLooping(looping);
+    }
+}
+
+/** checks if the transport source has finished */
+bool DJAudioPlayer::playbackFinished(){
+    return this->transportSource.hasStreamFinished();
 }
 
 /** sets coefficients for the HighPass filter */

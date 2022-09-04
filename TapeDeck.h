@@ -34,9 +34,14 @@ public:
     /** sets the speed as a ratio between 1 and 100
      * @param ratio - ratio as double */
     void setSpeed(double ratio);
+    
+    /** set the tape title
+     * @param String - track title */
+    void setTrackTitle(std::string title);
 
 private:
     double position;
     double speed;
+    std::string tapeTitle;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TapeDeck)
 };

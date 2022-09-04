@@ -75,6 +75,10 @@ public:
      * @param &event - address of a mouse event */
     void mouseDown(const MouseEvent &event) override;
     
+    /** detects mouse release
+     * @param &event - address of a mouse event */
+    void mouseUp(const MouseEvent &event) override;
+    
 private:
     // Image Buttons
     ImageButton playButton;

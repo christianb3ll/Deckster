@@ -87,8 +87,8 @@ void TapeDeck::paint (juce::Graphics& g)
     Path sprocket2(sprocket1);
     
     // Rotate the sprocket based on current player pos and speed
-    sprocket1.applyTransform(AffineTransform::rotation(position*speed, sprocketWidth/2, sprocketWidth/2));
-    sprocket2.applyTransform(AffineTransform::rotation(position*speed, sprocketWidth/2, sprocketWidth/2));
+    sprocket1.applyTransform(AffineTransform::rotation(position*10, sprocketWidth/2, sprocketWidth/2));
+    sprocket2.applyTransform(AffineTransform::rotation(position*10, sprocketWidth/2, sprocketWidth/2));
     
     // Translate the sprocket to correct position on tape
     sprocket1.applyTransform(AffineTransform::translation(sprocket1X,speakerHeight + sprocketWidth));
@@ -128,6 +128,15 @@ void TapeDeck::paint (juce::Graphics& g)
     g.fillEllipse((getWidth() - tapeBaseOriginX)*0.9, speakerHeight+(tapeHeight*0.85), tapeHeight*0.1, tapeHeight*0.1);
     g.fillEllipse((getWidth() - tapeBaseOriginX)*0.85, speakerHeight+(tapeHeight*0.83), tapeHeight*0.05, tapeHeight*0.05);
     
+    // Draw the tape title
+    Rectangle<int> titleArea(getWidth()/4,speakerHeight + (tapeHeight*0.1), getWidth()/2, 20);
+    g.setFont (14.0f);
+    g.setColour(juce::Colours::white);
+    g.fillRect(titleArea);
+    g.setColour(juce::Colours::black);
+    g.drawFittedText(this->tapeTitle, titleArea, Justification::centred,true);
+
+    
     
     // Draw the shine overlay
 //    g.setColour(Colour(255.0f,255.0f,255.0f, 0.4f));
@@ -151,4 +160,10 @@ void TapeDeck::setPositionRelative(double pos){
 /** sets the speed as a ratio between 1 and 100  */
 void TapeDeck::setSpeed(double ratio){
     speed = ratio;
+}
+
+/** set the tape title */
+void TapeDeck::setTrackTitle(std::string title){
+    this->tapeTitle = title;
+    repaint();
 }

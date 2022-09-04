@@ -68,13 +68,18 @@ void Equalizer::sliderValueChanged(Slider *slider){
     // High Pass Slider
     if(slider == &highPassSlider){
         this->highPassFreq = slider->getValue();
-        player->setHighPassCoefficients(IIRCoefficients::makeHighPass(41000, this->highPassFreq));
+        if(!player->getCurrentTrack().empty()){
+            player->setHighPassCoefficients(IIRCoefficients::makeHighPass(player->getCurrentSampleRate(), this->highPassFreq));
+        }
+        
     }
     
     // Low Pass Slider
     if(slider == &lowPassSlider){
         this->lowPassFreq = slider->getValue();
-        player->setLowPassCoefficients(IIRCoefficients::makeLowPass(41000, this->lowPassFreq));
+        if(!player->getCurrentTrack().empty()){
+            player->setLowPassCoefficients(IIRCoefficients::makeLowPass(player->getCurrentSampleRate(), this->lowPassFreq));
+        }
     }
 }
 

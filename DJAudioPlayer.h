@@ -59,8 +59,28 @@ class DJAudioPlayer : public AudioSource {
          * @return double - relative position */
         double getPositionRelative();
     
+        /** get the current track title
+         * @return String - current track title */
+        std::string getCurrentTrack();
+    
+        /** set the current track title
+         * @param String - current track title */
+        void setCurrentTrack(std::string title);
+    
+        /** get the current track sample rate
+         * @return int - current sample rate */
+        int getCurrentSampleRate();
+
+        /** set the current track sample rate
+         * @param int - sample rate */
+        void setCurrentSampleRate(int sampleRate);
+    
         /** toggles looping playback */
         void toggleLoop();
+    
+        /** checks if the transport source has finished
+         * @return bool */
+        bool playbackFinished();
     
         /** sets coefficients for the HighPass filter
          * @param coefficients - IIRCoefficients object */
@@ -83,5 +103,7 @@ class DJAudioPlayer : public AudioSource {
         IIRFilterAudioSource filter1{&resampleSource, false};
         IIRFilterAudioSource filter2{&filter1, false};
     
+        std::string currentTrack;
+        int currentSampleRate;
         bool looping = false;
 };

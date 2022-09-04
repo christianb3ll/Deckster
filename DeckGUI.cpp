@@ -36,8 +36,9 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     volSlider.addListener(this);
     speedSlider.addListener(this);
     
-    // Moiuse Listener
+    // Mouse Listener
     waveformDisplay.addMouseListener(this, false);
+    fastforwardButton.addMouseListener(this, false);
 
     // Setup Sliders
     volSlider.setRange(0.0, 1.0);
@@ -121,6 +122,9 @@ void DeckGUI::buttonClicked(Button * button){
     
     // if the pointer for  button is equal to address of play button
     if(button == &playButton){
+        if(player->playbackFinished()){
+            player->setPosition(0.0);
+        }
         player->start();
     }
 
@@ -133,10 +137,6 @@ void DeckGUI::buttonClicked(Button * button){
         if(chooser.browseForFileToOpen()){
             loadTrack(URL{chooser.getResult()});
         }
-    }
-    
-    if(button == &fastforwardButton){
-        player->setSpeed(5.0);
     }
     
     if(button == &loopButton){
@@ -193,14 +193,32 @@ void DeckGUI::timerCallback(){
 /** Loads a track into the deck */
 void DeckGUI::loadTrack(URL track){
     player->loadURL(URL{track});
+    // Updates the tape title
+    this->tapeDeck.setTrackTitle(track.getFileName().toStdString());
     waveformDisplay.loadURL(URL{track});
 }
 
 /** detects mouse clicks */
 void DeckGUI::mouseDown(const MouseEvent &event){
-    double mousePos = event.getMouseDownX();
-    double relPos = mousePos / getWidth();
+    if(event.eventComponent == &waveformDisplay){
+        double mousePos = event.getMouseDownX();
+        double relPos = mousePos / getWidth();
+        
+        // detects mouse clicks on the waveform and send relative position to player
+        player->setPositionRelative(relPos);
+    }
     
-    // detects mouse clicks on the waveform and send relative position to player
-    player->setPositionRelative(relPos);
+    if(event.eventComponent == &fastforwardButton){
+        if(fastforwardButton.isMouseButtonDown()){
+            player->setSpeed(5.0);
+        }
+    }
+    
+}
+
+/** detects mouse release */
+void DeckGUI::mouseUp(const MouseEvent &event){
+    if(event.eventComponent == &fastforwardButton){
+        player->setSpeed(1.0);
+    }
 }

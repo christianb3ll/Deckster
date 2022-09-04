@@ -38,8 +38,8 @@ private:
     Slider deck1Slider;
     Slider deck2Slider;
     
-    Label deck1Label{"deck1Label", "Deck 1"};
-    Label deck2Label{"deck2Label", "Deck 2"};
+    Label deck1Label{"deck1Label", "Deck 1 Gain: "};
+    Label deck2Label{"deck2Label", "Deck 2 Gain: "};
     
     DJAudioPlayer* player1;
     DJAudioPlayer* player2;
