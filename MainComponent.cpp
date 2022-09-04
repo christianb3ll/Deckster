@@ -17,7 +17,7 @@ MainComponent::MainComponent()
     }
     else
     {
-        setAudioChannels (2, 2);
+        setAudioChannels (0, 2);
     }
     
     addAndMakeVisible(deckGUI1);
