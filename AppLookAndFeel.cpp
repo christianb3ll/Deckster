@@ -31,6 +31,13 @@ void AppLookAndFeel::setupLookAndFeel(LookAndFeel& lookAndFeel){
     
     // Labels
     lookAndFeel.setColour(juce::Label::textColourId, juce::Colours::black);
+    
+    // Table
+    lookAndFeel.setColour(juce::TableHeaderComponent::backgroundColourId, juce::Colours::white);
+    lookAndFeel.setColour(juce::TableHeaderComponent::textColourId, juce::Colours::black);
+    
+    lookAndFeel.setColour(juce::ListBox::backgroundColourId, juce::Colours::darkgrey);
+    lookAndFeel.setColour(juce::ListBox::textColourId, juce::Colours::black);
 }
 
 /** Draws a rotary slider. Overides default Juce rotary slider */
@@ -99,8 +106,14 @@ void AppLookAndFeel::drawButtonBackground(juce::Graphics& g,
     g.setColour(backgroundColour);
     g.drawRect(buttonArea);
     
-    if(isButtonDown) g.fillRect(buttonArea);
-    
+    if(isHighlighted){
+        g.setColour(juce::Colours::lightslategrey);
+        g.fillRect(buttonArea);
+    }
+    if(isButtonDown){
+        g.setColour(juce::Colours::darkgrey);
+        g.fillRect(buttonArea);
+    }
 }
 
 

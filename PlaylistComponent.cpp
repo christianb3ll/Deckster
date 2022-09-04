@@ -84,9 +84,9 @@ int PlaylistComponent::getNumRows(){
 /** Draws the row background */
 void PlaylistComponent::paintRowBackground(Graphics & g, int rowNumber, int width, int height, bool rowIsSelected){
     if(rowIsSelected){
-        g.fillAll(Colours::orange);
+        g.fillAll(Colours::yellow);
     } else {
-        g.fillAll(Colours::darkgrey);
+        g.fillAll(Colours::white);
     }
 }
 
