@@ -17,7 +17,6 @@ AudioTrack::AudioTrack(std::string _trackTitle,
 
 /** Destructor for AudioTrack class */
 AudioTrack::~AudioTrack(){
-    
 }
 
 /** returns the track title as a string */

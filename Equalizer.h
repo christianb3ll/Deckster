@@ -45,6 +45,12 @@ public:
     /** returns the lowPassFrequency
      * @return lowPassFrequency as double */
     double getLowPassFrequency();
+    
+    /** enables HighPass */
+    void enableHighPass();
+    
+    /** enables LowPass */
+    void enableLowPass();
 
 private:
     DJAudioPlayer* player;

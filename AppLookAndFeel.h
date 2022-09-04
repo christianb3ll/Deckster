@@ -44,17 +44,6 @@ public:
                           const float rotaryEndAngle,
                           juce::Slider& slider) override;
     
-//    void drawLinearSlider(Graphics &,
-//                                    int x,
-//                                    int y,
-//                                    int width,
-//                                    int height,
-//                                    float sliderPos,
-//                                    float minSliderPos,
-//                                    float maxSliderPos,
-//                                    const Slider::SliderStyle style,
-//                                    Slider &) override;
-    
     /** Draws the background for standard buttons
      * overrides default Juse button drawing
      * @param g - address of a juce::graphics object
@@ -67,8 +56,6 @@ public:
                               const juce::Colour& backgroundColour,
                               bool isButtonHighlighted,
                               bool isButtonDown) override;
-
-    
     
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AppLookAndFeel)

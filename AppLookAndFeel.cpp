@@ -78,23 +78,6 @@ void AppLookAndFeel::drawRotarySlider(juce::Graphics& g,
     g.fillPath(p);
 }
 
-
-//void AppLookAndFeel::drawLinearSlider(Graphics& g,
-//                                int x,
-//                                int y,
-//                                int width,
-//                                int height,
-//                                float sliderPos,
-//                                float minSliderPos,
-//                                float maxSliderPos,
-//                                const Slider::SliderStyle style,
-//                                Slider &){
-//    g.setColour(Colour(255,0,0));
-////    Rectangle<int> test = Rectangle(maxSliderPos, y, 5, height);
-////    g.drawRect(test);
-//    g.drawEllipse(maxSliderPos, y, 20, height, 8);
-//}
-
 /** Draws the background for standard buttons
  * overrides default Juse button drawing */
 void AppLookAndFeel::drawButtonBackground(juce::Graphics& g,
@@ -107,7 +90,7 @@ void AppLookAndFeel::drawButtonBackground(juce::Graphics& g,
     g.drawRect(buttonArea);
     
     if(isHighlighted){
-        g.setColour(juce::Colours::lightslategrey);
+        g.setColour(juce::Colours::dimgrey);
         g.fillRect(buttonArea);
     }
     if(isButtonDown){
@@ -115,5 +98,3 @@ void AppLookAndFeel::drawButtonBackground(juce::Graphics& g,
         g.fillRect(buttonArea);
     }
 }
-
-

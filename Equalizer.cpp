@@ -67,19 +67,12 @@ void Equalizer::resized()
 void Equalizer::sliderValueChanged(Slider *slider){
     // High Pass Slider
     if(slider == &highPassSlider){
-        this->highPassFreq = slider->getValue();
-        if(!player->getCurrentTrack().empty()){
-            player->setHighPassCoefficients(IIRCoefficients::makeHighPass(player->getCurrentSampleRate(), this->highPassFreq));
-        }
-        
+        this->enableHighPass();
     }
     
     // Low Pass Slider
     if(slider == &lowPassSlider){
-        this->lowPassFreq = slider->getValue();
-        if(!player->getCurrentTrack().empty()){
-            player->setLowPassCoefficients(IIRCoefficients::makeLowPass(player->getCurrentSampleRate(), this->lowPassFreq));
-        }
+        this->enableLowPass();
     }
 }
 
@@ -90,13 +83,15 @@ void Equalizer::buttonClicked(Button *button){
         this->highPass = !highPass;
         highPassSlider.setEnabled(highPass);
         if(!highPass) player->deactivateFilter("highPass");
+        if(highPass) this->enableHighPass();
     }
     
     // Low Pass Toggle
     if(button == &lowPassToggle){
         this->lowPass = !lowPass;
         lowPassSlider.setEnabled(lowPass);
-        if(!highPass) player->deactivateFilter("lowPass");
+        if(!lowPass) player->deactivateFilter("lowPass");
+        if(lowPass) this->enableLowPass();
     }
 }
 
@@ -108,4 +103,20 @@ double Equalizer::getHighPassFrequency(){
 /** returns the lowPassFrequency */
 double Equalizer::getLowPassFrequency(){
     return this->lowPassFreq;
+}
+
+/** enables HighPass */
+void Equalizer::enableHighPass(){
+    this->highPassFreq = this->highPassSlider.getValue();
+    if(!player->getCurrentTrack().empty()){
+        player->setHighPassCoefficients(IIRCoefficients::makeHighPass(player->getCurrentSampleRate(), this->highPassFreq));
+    }
+}
+
+/** enables LowPass */
+void Equalizer::enableLowPass(){
+    this->lowPassFreq = this->lowPassSlider.getValue();
+    if(!player->getCurrentTrack().empty()){
+        player->setLowPassCoefficients(IIRCoefficients::makeLowPass(player->getCurrentSampleRate(), this->lowPassFreq));
+    }
 }

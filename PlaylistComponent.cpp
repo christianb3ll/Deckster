@@ -21,7 +21,7 @@ PlaylistComponent::PlaylistComponent(AudioFormatManager& _formatManager, DeckGUI
     tableComponent.getHeader().addColumn("Runtime", 2, 100, TableHeaderComponent::notSortable);
     tableComponent.getHeader().addColumn("Sample Rate", 3, 100, TableHeaderComponent::notSortable);
     tableComponent.getHeader().addColumn("File Type", 4, 100, TableHeaderComponent::notSortable);
-    tableComponent.getHeader().addColumn("Filepath", 5, 200, TableHeaderComponent::notSortable);
+    tableComponent.getHeader().addColumn("Filepath", 5, 150, TableHeaderComponent::notSortable);
                                         
     tableComponent.setModel(this);
     
@@ -68,7 +68,7 @@ void PlaylistComponent::paint (juce::Graphics& g)
 /** Called when this component's size has been changed. */
 void PlaylistComponent::resized()
 {
-    tableComponent.setBounds(0, 50, getWidth(), getHeight());
+    tableComponent.setBounds(0, 50, getWidth(), getHeight()-50);
     importButton.setBounds(0, 0, (getWidth()/6), 50);
     sendDeck1.setBounds((getWidth()/6), 0, (getWidth()/6), 50);
     sendDeck2.setBounds(2*(getWidth()/6), 0, (getWidth()/6), 50);
@@ -158,12 +158,17 @@ void PlaylistComponent::buttonClicked(Button* button){
     // Send to Deck 1
     if(button == &sendDeck1){
         int trackId = tableComponent.getSelectedRow();
-        deck1->loadTrack(URL{trackList[trackId].getTrackFilepath()});
+        if(trackId != -1){
+            deck1->loadTrack(URL{trackList[trackId].getTrackFilepath()});
+        }
+        
     }
     // Send to Deck 2
     if(button == &sendDeck2){
         int trackId = tableComponent.getSelectedRow();
-        deck2->loadTrack(URL{trackList[trackId].getTrackFilepath()});
+        if(trackId != -1){
+            deck2->loadTrack(URL{trackList[trackId].getTrackFilepath()});
+        }
     }
 }
 

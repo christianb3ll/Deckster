@@ -38,7 +38,7 @@ void WaveformDisplay::paint (juce::Graphics& g)
         
     } else {
         g.setFont (20.0f);
-        g.drawText ("File not loaded...", getLocalBounds(),
+        g.drawText ("Tape not loaded...", getLocalBounds(),
                     juce::Justification::centred, true);
     }
 }

@@ -64,7 +64,6 @@ void TapeDeck::paint (juce::Graphics& g)
     Rectangle<int> tapeBody(getWidth()*0.1, speakerHeight, getWidth()*0.8, tapeHeight);
     g.setColour(Colour(200, 200, 200));
     g.fillRect(tapeBody);
-    //    shadow.drawForRectangle(g, tapeBody);
 
     // Draw tape window and sprocket base
     double tapeWindowWidth = getWidth()*0.5;
@@ -87,8 +86,8 @@ void TapeDeck::paint (juce::Graphics& g)
     Path sprocket2(sprocket1);
     
     // Rotate the sprocket based on current player pos and speed
-    sprocket1.applyTransform(AffineTransform::rotation(position*10, sprocketWidth/2, sprocketWidth/2));
-    sprocket2.applyTransform(AffineTransform::rotation(position*10, sprocketWidth/2, sprocketWidth/2));
+    sprocket1.applyTransform(AffineTransform::rotation(position*20, sprocketWidth/2, sprocketWidth/2));
+    sprocket2.applyTransform(AffineTransform::rotation(position*20, sprocketWidth/2, sprocketWidth/2));
     
     // Translate the sprocket to correct position on tape
     sprocket1.applyTransform(AffineTransform::translation(sprocket1X,speakerHeight + sprocketWidth));
@@ -135,13 +134,6 @@ void TapeDeck::paint (juce::Graphics& g)
     g.fillRect(titleArea);
     g.setColour(juce::Colours::black);
     g.drawFittedText(this->tapeTitle, titleArea, Justification::centred,true);
-
-    
-    
-    // Draw the shine overlay
-//    g.setColour(Colour(255.0f,255.0f,255.0f, 0.4f));
-//    g.fillRect(getWidth()/2,0,getWidth()*0.1,getHeight()*2);
-
 }
 
 /** Called when this component's size has been changed. */
