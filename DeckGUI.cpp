@@ -42,7 +42,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 
     // Setup Sliders
     volSlider.setRange(0.0, 1.0);
-    speedSlider.setRange(1,20.0);
+    speedSlider.setRange(0.1,20.0);
     speedSlider.setSliderStyle(Slider::Rotary);
     speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     
