@@ -52,23 +52,23 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     // Setup the Image Buttons
     // Set up Play Button images
     Image playIcon = ImageCache::getFromMemory(BinaryData::playbutton_png, BinaryData::playbutton_pngSize);
-    playButton.setImages (false, false, true, playIcon, 1.0f, {}, playIcon, 0.8f, {}, playIcon, 1.0f, {juce::Colours::transparentWhite});
+    playButton.setImages (false, false, true, playIcon, 1.0f, {}, playIcon, 0.8f, {}, playIcon, 1.0f, {juce::Colours::white});
     
     // Set up Stop Button images
     Image pauseIcon = ImageCache::getFromMemory(BinaryData::pausebutton_png, BinaryData::pausebutton_pngSize);
-    stopButton.setImages (false, false, true, pauseIcon, 1.0f, {}, pauseIcon, 0.8f, {}, pauseIcon, 1.0f, {juce::Colours::transparentWhite});
+    stopButton.setImages (false, false, true, pauseIcon, 1.0f, {}, pauseIcon, 0.8f, {}, pauseIcon, 1.0f, {juce::Colours::white});
     
     // Set up Fast Forward Button images
     Image fastforwardIcon = ImageCache::getFromMemory(BinaryData::fastforwardbutton_png, BinaryData::fastforwardbutton_pngSize);
-    fastforwardButton.setImages (false, false, true, fastforwardIcon, 1.0f, {}, fastforwardIcon, 0.8f, {}, fastforwardIcon, 1.0f, {juce::Colours::transparentWhite});
+    fastforwardButton.setImages (false, false, true, fastforwardIcon, 1.0f, {}, fastforwardIcon, 0.8f, {}, fastforwardIcon, 1.0f, {juce::Colours::white});
     
     // Set up Loop Button images
     Image loopIcon = ImageCache::getFromMemory(BinaryData::loopbutton_png, BinaryData::loopbutton_pngSize);
-    loopButton.setImages (false, false, true, loopIcon, 1.0f, {}, loopIcon, 0.8f, {}, loopIcon, 1.0f, {juce::Colours::transparentWhite});
+    loopButton.setImages (false, false, true, loopIcon, 1.0f, {}, loopIcon, 0.8f, {}, loopIcon, 1.0f, {juce::Colours::white});
     
     // Set up Load Button images
     Image loadIcon = ImageCache::getFromMemory(BinaryData::loadbutton_png, BinaryData::loadbutton_pngSize);
-    loadButton.setImages (false, false, true, loadIcon, 1.0f, {}, loadIcon, 0.8f, {}, loadIcon, 1.0f, {juce::Colours::transparentWhite});
+    loadButton.setImages (false, false, true, loadIcon, 1.0f, {}, loadIcon, 0.8f, {}, loadIcon, 1.0f, {juce::Colours::white});
 }
 
 /** Constructor for DJAudioPlayer class */
@@ -91,6 +91,16 @@ void DeckGUI::paint (juce::Graphics& g)
     Path jogWheel;
     jogWheel.addEllipse(0, (getHeight()/2) + (getHeight()/8)*2, getWidth()/6, getHeight()/8);
     jogWheelShadow.drawForPath(g, jogWheel);
+    
+    // Sets Play button to down state during playback
+    if(this->player->isPlaying()){
+        playButton.setState(Button::buttonDown);
+    }
+    
+    if(this->player->isLooping()){
+        loopButton.setState(Button::buttonDown);
+    }
+    
 }
 
 /** Called when this component's size has been changed. */
@@ -130,6 +140,7 @@ void DeckGUI::buttonClicked(Button * button){
 
     if(button == &stopButton){
         player->stop();
+        playButton.setState(Button::buttonNormal);
     }
 
     if(button == &loadButton){

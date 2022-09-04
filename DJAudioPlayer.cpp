@@ -133,6 +133,16 @@ void DJAudioPlayer::toggleLoop(){
     }
 }
 
+/** checks if the transport source is playing */
+bool DJAudioPlayer::isPlaying(){
+    return this->transportSource.isPlaying();
+}
+
+/** checks if the transport source is looping  */
+bool DJAudioPlayer::isLooping(){
+    return this->looping;
+}
+
 /** checks if the transport source has finished */
 bool DJAudioPlayer::playbackFinished(){
     return this->transportSource.hasStreamFinished();

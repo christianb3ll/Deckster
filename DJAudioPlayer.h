@@ -78,6 +78,14 @@ class DJAudioPlayer : public AudioSource {
         /** toggles looping playback */
         void toggleLoop();
     
+        /** checks if the transport source is playing
+         * @return bool */
+        bool isPlaying();
+    
+        /** checks if the transport source is looping
+         * @return bool */
+        bool isLooping();
+    
         /** checks if the transport source has finished
          * @return bool */
         bool playbackFinished();
