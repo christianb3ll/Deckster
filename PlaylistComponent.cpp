@@ -159,7 +159,7 @@ void PlaylistComponent::buttonClicked(Button* button){
     if(button == &sendDeck1){
         int trackId = tableComponent.getSelectedRow();
         if(trackId != -1){
-            deck1->loadTrack(URL{trackList[trackId].getTrackFilepath()});
+            deck1->loadTrack(URL{filteredTracks[trackId].getTrackFilepath()});
         }
         
     }
@@ -167,7 +167,7 @@ void PlaylistComponent::buttonClicked(Button* button){
     if(button == &sendDeck2){
         int trackId = tableComponent.getSelectedRow();
         if(trackId != -1){
-            deck2->loadTrack(URL{trackList[trackId].getTrackFilepath()});
+            deck2->loadTrack(URL{filteredTracks[trackId].getTrackFilepath()});
         }
     }
 }
